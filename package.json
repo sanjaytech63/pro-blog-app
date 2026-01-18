@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint src --ext .ts,.tsx,.js",
+    "lint": "eslint src tests --ext .ts,.tsx,.js",
     "prepare": "husky",
     "stylelint": "stylelint '**/*.{css,scss}'",
     "test": "vitest run --coverage"
