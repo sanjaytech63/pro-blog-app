@@ -12,11 +12,11 @@
     "test": "vitest run --coverage"
   },
   "lint-staged": {
-    "src/**/*.{ts,tsx,js,jsx}": [
+    "*.{js,jsx,ts,tsx}": [
       "eslint --fix",
       "prettier --write"
     ],
-    "*.{css,scss,md}": [
+    "*.{json,css,scss,md,yml,yaml}": [
       "prettier --write"
     ]
   },
