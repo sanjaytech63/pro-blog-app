@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
+    "lint": "eslint src tests --ext .ts,.tsx,.js",
     "prepare": "husky",
     "stylelint": "stylelint '**/*.{css,scss}'",
     "test": "vitest run --coverage"
@@ -18,7 +18,8 @@
     ],
     "*.{json,css,scss,md,yml,yaml}": [
       "prettier --write"
-    ]
+    ],
+    "!*.config.{js,cjs,mjs}": "echo skipped"
   },
   "dependencies": {
     "dotenv": "^17.2.3",
