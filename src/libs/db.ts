@@ -6,7 +6,7 @@ let isConnected = false
 export async function connectDB() {
   if (isConnected) return
 
-  const conn = await mongoose.connect(env.MONGO_URI)
+  const conn = await mongoose.connect(env.MONGO_URI as string)
   isConnected = !!conn.connections[0].readyState
   console.log('MongoDB Connected')
 }

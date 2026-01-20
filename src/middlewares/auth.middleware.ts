@@ -12,7 +12,11 @@ export function verifyAuth(req: NextRequest) {
   }
 
   try {
-    const decoded = jwt.verify(token, env.JWT_SECRET) as DecodedToken
+    const decoded = jwt.verify(
+      token,
+      env.JWT_SECRET as string,
+    ) as unknown as DecodedToken
+
     req.user = decoded
     return null
   } catch (err: unknown) {
