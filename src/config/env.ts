@@ -9,7 +9,10 @@ const serverSchema = z.object({
   MONGO_URI: z.string().min(1, 'MONGO_URI is required'),
   JWT_SECRET: z.string().min(1, 'JWT_SECRET is required'),
 
-  JWT_EXPIRES_IN: z.string().default('15m'),
+  JWT_EXPIRES_IN: z
+    .string()
+    .regex(/^\d+(ms|s|m|h|d|w)$/)
+    .default('15m'),
   OTP_EXPIRES_MINUTES: z.coerce.number().default(5),
 
   NODE_ENV: z
