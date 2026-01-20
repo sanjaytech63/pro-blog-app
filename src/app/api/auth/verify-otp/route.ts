@@ -9,5 +9,5 @@ export const POST = catchAsync(async (req: NextRequest) => {
   await connectDB()
   const { email, otp } = verifyOtpSchema.parse(await req.json())
   const result = await authService.verifyOtp(email, otp)
-  return ApiResponse.success(result, 'Account verified')
+  return ApiResponse.success(result, 'Account verified successfully')
 })

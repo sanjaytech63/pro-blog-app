@@ -6,6 +6,7 @@ import { signToken } from '@/src/libs/jwt'
 import { env } from '@/src/config/env'
 import { emailService } from '@/src/services/email.service'
 import crypto from 'crypto'
+import { log } from 'console'
 
 class AuthService {
   async register(fullName: string, email: string, password: string) {
@@ -66,6 +67,7 @@ class AuthService {
   async login(email: string, password: string) {
     const normalizedEmail = email.trim().toLowerCase()
     const user = await User.findOne({ email: normalizedEmail })
+
     if (!user) throw new ApiError(404, 'User not found')
     if (!user.isVerified) throw new ApiError(400, 'Account not verified')
 
@@ -100,6 +102,7 @@ class AuthService {
 
     const resetUrl = `${env.NEXT_PUBLIC_BASE_URL}/reset-password?token=${rawToken}`
     await emailService.sendResetPassword(normalizedEmail, resetUrl)
+    log(rawToken)
 
     return { email: normalizedEmail }
   }
