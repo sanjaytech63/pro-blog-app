@@ -12,6 +12,10 @@ export interface IUser extends Document {
 
   resetPasswordToken?: string
   resetPasswordExpires?: Date
+
+  isDeleted: boolean
+  deletedAt?: Date
+  deletedBy?: mongoose.Types.ObjectId
 }
 
 const userSchema = new Schema<IUser>(
@@ -38,6 +42,10 @@ const userSchema = new Schema<IUser>(
     // Password Reset
     resetPasswordToken: String,
     resetPasswordExpires: Date,
+
+    isDeleted: { type: Boolean, default: false },
+    deletedAt: { type: Date },
+    deletedBy: { type: Schema.Types.ObjectId, ref: 'Admin' },
   },
   { timestamps: true },
 )
