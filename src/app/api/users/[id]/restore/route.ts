@@ -6,16 +6,18 @@ import { ApiResponse } from '@/src/utils/ApiResponse'
 import { catchAsync } from '@/src/utils/catchAsync'
 import { NextRequest } from 'next/server'
 
-export const PATCH = catchAsync<'id'>(async (req: NextRequest, { params }) => {
-  const auth = verifyAuth(req)
-  if (auth) return auth
+export const PATCH = catchAsync(
+  async (req: NextRequest, { params }: { params: { id: string } }) => {
+    const auth = verifyAuth(req)
+    if (auth) return auth
 
-  const adminCheck = requireAdmin(req)
-  if (adminCheck) return adminCheck
+    const adminCheck = requireAdmin(req)
+    if (adminCheck) return adminCheck
 
-  await connectDB()
+    await connectDB()
 
-  const restored = await userService.restoreUser(params.id)
+    const restored = await userService.restoreUser(params.id)
 
-  return ApiResponse.success(restored, 'User restored successfully')
-})
+    return ApiResponse.success(restored, 'User restored successfully')
+  },
+)

@@ -6,19 +6,21 @@ import { userService } from '@/src/services/user.service'
 import { ApiResponse } from '@/src/utils/ApiResponse'
 import { catchAsync } from '@/src/utils/catchAsync'
 
-export const DELETE = catchAsync<'id'>(async (req: NextRequest, { params }) => {
-  const auth = verifyAuth(req)
-  if (auth) return auth
+export const DELETE = catchAsync(
+  async (req: NextRequest, { params }: { params: { id: string } }) => {
+    const auth = verifyAuth(req)
+    if (auth) return auth
 
-  const adminCheck = requireAdmin(req)
-  if (adminCheck) return adminCheck
+    const adminCheck = requireAdmin(req)
+    if (adminCheck) return adminCheck
 
-  await connectDB()
+    await connectDB()
 
-  const userId = params.id
-  const adminId = req.user!.id
+    const userId = params.id
+    const adminId = req.user!.id
 
-  const deletedUser = await userService.softDeleteUser(userId, adminId)
+    const deletedUser = await userService.softDeleteUser(userId, adminId)
 
-  return ApiResponse.success(deletedUser, 'User soft deleted')
-})
+    return ApiResponse.success(deletedUser, 'User soft deleted')
+  },
+)
