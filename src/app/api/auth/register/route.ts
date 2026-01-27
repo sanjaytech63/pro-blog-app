@@ -1,9 +1,9 @@
 import { NextRequest } from 'next/server'
-import { connectDB } from '@/src/libs/db'
-import { catchAsync } from '@/src/utils/catchAsync'
-import { ApiResponse } from '@/src/utils/ApiResponse'
-import { registerSchema } from '@/src/validators/auth.schema'
-import { authService } from '@/src/services/auth.service'
+import { connectDB } from '@/lib/db'
+import { catchAsync } from '@/utils/catchAsync'
+import { ApiResponse } from '@/utils/ApiResponse'
+import { registerSchema } from '@/validators/auth.schema'
+import { authService } from '@/services/auth.service'
 
 export const POST = catchAsync(async (req: NextRequest) => {
   await connectDB()

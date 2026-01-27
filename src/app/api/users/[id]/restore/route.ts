@@ -1,23 +1,18 @@
-import { connectDB } from '@/src/libs/db'
-import { verifyAuth } from '@/src/middlewares/auth.middleware'
-import { requireAdmin } from '@/src/middlewares/requireAdmin'
-import { userService } from '@/src/services/user.service'
-import { ApiResponse } from '@/src/utils/ApiResponse'
-import { catchAsync } from '@/src/utils/catchAsync'
+import { connectDB } from '@/lib/db'
+import { requireAdminUser } from '@/middlewares/guards'
+import { userService } from '@/services/user.service'
+import { ApiResponse } from '@/utils/ApiResponse'
+import { catchAsync } from '@/utils/catchAsync'
 import { NextRequest } from 'next/server'
 
 export const PATCH = catchAsync(
   async (req: NextRequest, { params }: { params: { id: string } }) => {
-    const auth = verifyAuth(req)
-    if (auth) return auth
-
-    const adminCheck = requireAdmin(req)
-    if (adminCheck) return adminCheck
+    const guard = requireAdminUser(req)
+    if (guard) return guard
 
     await connectDB()
 
     const restored = await userService.restoreUser(params.id)
-
-    return ApiResponse.success(restored, 'User restored successfully')
+    return ApiResponse.success(restored, 'User restored')
   },
 )

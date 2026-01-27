@@ -1,26 +1,19 @@
 import { NextRequest } from 'next/server'
-import { connectDB } from '@/src/libs/db'
-import { verifyAuth } from '@/src/middlewares/auth.middleware'
-import { requireAdmin } from '@/src/middlewares/requireAdmin'
-import { userService } from '@/src/services/user.service'
-import { ApiResponse } from '@/src/utils/ApiResponse'
-import { catchAsync } from '@/src/utils/catchAsync'
+import { connectDB } from '@/lib/db'
+import { userService } from '@/services/user.service'
+import { ApiResponse } from '@/utils/ApiResponse'
+import { catchAsync } from '@/utils/catchAsync'
+import { requireAdminUser } from '@/middlewares/guards'
 
 export const DELETE = catchAsync(
   async (req: NextRequest, { params }: { params: { id: string } }) => {
-    const auth = verifyAuth(req)
-    if (auth) return auth
-
-    const adminCheck = requireAdmin(req)
-    if (adminCheck) return adminCheck
+    const guard = requireAdminUser(req)
+    if (guard) return guard
 
     await connectDB()
 
-    const userId = params.id
-    const adminId = req.user!.id
+    const deleted = await userService.softDeleteUser(params.id, req.user!.id)
 
-    const deletedUser = await userService.softDeleteUser(userId, adminId)
-
-    return ApiResponse.success(deletedUser, 'User soft deleted')
+    return ApiResponse.success(deleted, 'User soft deleted')
   },
 )

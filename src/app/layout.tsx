@@ -1,5 +1,9 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import ClientProviders from '@/components/providers/ClientProviders'
+import { Navbar } from '@/components/navbar/navbar'
+import { Footer } from '@/components/footer/footer'
+import { ThemeProvider } from '@/hooks/ThemeProvider'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://blogmint.com'),
@@ -52,7 +56,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        <ClientProviders>
+          <ThemeProvider>
+            <Navbar />
+            {children}
+            <Footer />
+          </ThemeProvider>
+        </ClientProviders>
+      </body>
     </html>
   )
 }

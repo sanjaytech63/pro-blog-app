@@ -1,6 +1,6 @@
-import { User } from '@/src/models/user.model'
-import ApiError from '@/src/utils/ApiError'
-import { UpdateProfileDto } from '@/src/validators/user.schema'
+import { User } from '@/models/user.model'
+import ApiError from '@/utils/ApiError'
+import { UpdateProfileDto } from '@/validators/user.schema'
 
 class UserService {
   async getProfile(userId: string) {
@@ -79,6 +79,16 @@ class UserService {
       .sort({ createdAt: -1 })
 
     return users
+  }
+
+  async getById(userId: string) {
+    const user = await User.findById(userId).select('-password')
+
+    if (!user) {
+      throw new ApiError(404, 'User not found')
+    }
+
+    return user
   }
 }
 

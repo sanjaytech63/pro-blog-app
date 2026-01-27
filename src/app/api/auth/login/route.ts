@@ -3,18 +3,18 @@
 // 👍 IP Logging
 // 👍 Ability to cancel reset
 
-import { NextRequest } from 'next/server'
-import { connectDB } from '@/src/libs/db'
-import { authService } from '@/src/services/auth.service'
-import { ApiResponse } from '@/src/utils/ApiResponse'
-import { catchAsync } from '@/src/utils/catchAsync'
-import { loginSchema } from '@/src/validators/auth.schema'
+import { authService } from '@/services/auth.service'
+import { ApiResponse } from '@/utils/ApiResponse'
+import { catchAsync } from '@/utils/catchAsync'
+import { loginSchema } from '@/validators/auth.schema'
+import { setAuthCookies } from '@/lib/auth-cookies'
 
-export const POST = catchAsync(async (req: NextRequest) => {
-  await connectDB()
+export const POST = catchAsync(async (req) => {
   const { email, password } = loginSchema.parse(await req.json())
 
-  const result = await authService.login(email, password)
+  const { accessToken, refreshToken } = await authService.login(email, password)
 
-  return ApiResponse.success(result, 'Login successful')
+  await setAuthCookies(accessToken, refreshToken)
+
+  return ApiResponse.success(null, 'Login successful')
 })

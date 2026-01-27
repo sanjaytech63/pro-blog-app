@@ -1,21 +1,19 @@
 import { NextRequest } from 'next/server'
-import { connectDB } from '@/src/libs/db'
-import { updateProfileSchema } from '@/src/validators/user.schema'
-import { userService } from '@/src/services/user.service'
-import { ApiResponse } from '@/src/utils/ApiResponse'
-import { catchAsync } from '@/src/utils/catchAsync'
-import { verifyAuth } from '@/src/middlewares/auth.middleware'
+import { connectDB } from '@/lib/db'
+import { updateProfileSchema } from '@/validators/user.schema'
+import { userService } from '@/services/user.service'
+import { ApiResponse } from '@/utils/ApiResponse'
+import { catchAsync } from '@/utils/catchAsync'
+import { requireUser } from '@/middlewares/guards'
 
 export const PUT = catchAsync(async (req: NextRequest) => {
-  const auth = verifyAuth(req)
-  if (auth) return auth
+  const guard = requireUser(req)
+  if (guard) return guard
 
   await connectDB()
 
   const body = updateProfileSchema.parse(await req.json())
-  const userId = req.user!.id
+  const updatedUser = await userService.updateProfile(req.user!.id, body)
 
-  const updatedUser = await userService.updateProfile(userId, body)
-
-  return ApiResponse.success(updatedUser, 'Profile updated successfully')
+  return ApiResponse.success(updatedUser, 'Profile updated')
 })

@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer'
-import { env } from '@/src/config/env'
+import { env } from '@/config/env'
 
 class EmailService {
   private transporter = nodemailer.createTransport({

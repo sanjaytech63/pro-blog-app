@@ -1,10 +1,10 @@
 import { NextRequest } from 'next/server'
-import { connectDB } from '@/src/libs/db'
-import { userService } from '@/src/services/user.service'
-import { ApiResponse } from '@/src/utils/ApiResponse'
-import { catchAsync } from '@/src/utils/catchAsync'
-import { verifyAuth } from '@/src/middlewares/auth.middleware'
-import { requireAdmin } from '@/src/middlewares/requireAdmin'
+import { connectDB } from '@/lib/db'
+import { userService } from '@/services/user.service'
+import { ApiResponse } from '@/utils/ApiResponse'
+import { catchAsync } from '@/utils/catchAsync'
+import { verifyAuth } from '@/middlewares/auth.middleware'
+import { requireAdmin } from '@/middlewares/requireAdmin'
 
 export const DELETE = catchAsync<'id'>(async (req: NextRequest, { params }) => {
   const auth = verifyAuth(req)

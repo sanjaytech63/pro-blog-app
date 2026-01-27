@@ -1,22 +1,16 @@
 import { NextRequest } from 'next/server'
-import { connectDB } from '@/src/libs/db'
-import { userService } from '@/src/services/user.service'
-import { ApiResponse } from '@/src/utils/ApiResponse'
-import { catchAsync } from '@/src/utils/catchAsync'
-import { verifyAuth } from '@/src/middlewares/auth.middleware'
-import { requireAdmin } from '@/src/middlewares/requireAdmin'
+import { connectDB } from '@/lib/db'
+import { userService } from '@/services/user.service'
+import { ApiResponse } from '@/utils/ApiResponse'
+import { catchAsync } from '@/utils/catchAsync'
+import { requireUser } from '@/middlewares/guards'
 
 export const GET = catchAsync(async (req: NextRequest) => {
-  const auth = verifyAuth(req)
-  if (auth) return auth
-
-  const adminCheck = requireAdmin(req)
-  if (adminCheck) return adminCheck
+  const guard = requireUser(req)
+  if (guard) return guard
 
   await connectDB()
 
-  const query = Object.fromEntries(req.nextUrl.searchParams)
-  const users = await userService.listUsers(query)
-
-  return ApiResponse.success(users, 'Users fetched')
+  const user = await userService.getById(req.user!.id)
+  return ApiResponse.success(user)
 })

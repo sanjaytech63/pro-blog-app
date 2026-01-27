@@ -1,7 +1,12 @@
-export interface DecodedToken {
+export type AccessTokenPayload = {
   id: string
-  email: string
+  role: 'user' | 'admin'
   iat: number
   exp: number
-  role?: string
+}
+
+export type RefreshTokenPayload = {
+  id: string
+  iat: number
+  exp: number
 }

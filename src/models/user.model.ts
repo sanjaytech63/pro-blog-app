@@ -1,6 +1,6 @@
-import mongoose, { Schema, Document } from 'mongoose'
+import mongoose, { Schema, Types } from 'mongoose'
 
-export interface IUser extends Document {
+export interface IUser {
   fullName: string
   email: string
   password: string
@@ -13,41 +13,104 @@ export interface IUser extends Document {
   resetPasswordToken?: string
   resetPasswordExpires?: Date
 
+  refreshToken?: string
+  refreshTokenExpires?: Date
+
   isDeleted: boolean
   deletedAt?: Date
-  deletedBy?: mongoose.Types.ObjectId
+  deletedBy?: Types.ObjectId
+
+  role: 'user' | 'admin'
 }
 
 const userSchema = new Schema<IUser>(
   {
-    fullName: { type: String, required: true },
+    fullName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
 
     email: {
       type: String,
       required: true,
-      unique: true,
       lowercase: true,
+      unique: true,
       index: true,
     },
 
-    password: { type: String, required: true },
+    password: {
+      type: String,
+      required: true,
+      select: false,
+    },
 
     avatar: String,
 
-    // OTP Verification
-    verifyOTP: String,
-    verifyOTPExpires: Date,
-    isVerified: { type: Boolean, default: false },
+    /* -------- OTP Verification -------- */
+    verifyOTP: {
+      type: String,
+      select: false,
+    },
 
-    // Password Reset
-    resetPasswordToken: String,
-    resetPasswordExpires: Date,
+    verifyOTPExpires: {
+      type: Date,
+      index: true,
+    },
 
-    isDeleted: { type: Boolean, default: false },
-    deletedAt: { type: Date },
-    deletedBy: { type: Schema.Types.ObjectId, ref: 'Admin' },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+
+    /* -------- Password Reset -------- */
+    resetPasswordToken: {
+      type: String,
+      select: false,
+      index: true,
+    },
+
+    resetPasswordExpires: {
+      type: Date,
+      index: true,
+    },
+
+    /* -------- Refresh Token -------- */
+    refreshToken: {
+      type: String,
+      select: false,
+      index: true,
+    },
+
+    refreshTokenExpires: {
+      type: Date,
+      index: true,
+    },
+
+    /* -------- Access Control -------- */
+    role: {
+      type: String,
+      enum: ['user', 'admin'],
+      default: 'user',
+    },
+
+    /* -------- Soft Delete -------- */
+    isDeleted: {
+      type: Boolean,
+      default: false,
+      index: true,
+    },
+
+    deletedAt: Date,
+
+    deletedBy: {
+      type: Schema.Types.ObjectId,
+      ref: 'Admin',
+    },
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+  },
 )
 
 export const User =
