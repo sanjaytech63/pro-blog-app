@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server'
-import { connectDB } from '@/libs/db'
+import { connectDB } from '@/lib/db'
 import { ApiResponse } from '@/utils/ApiResponse'
 import { catchAsync } from '@/utils/catchAsync'
 import { forgotPasswordSchema } from '@/validators/auth.schema'

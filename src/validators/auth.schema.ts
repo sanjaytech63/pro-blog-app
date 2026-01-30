@@ -3,6 +3,9 @@ import { z } from 'zod'
 export const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
+  acceptTerms: z.boolean().refine((val) => val === true, {
+    message: 'You must accept the Terms & Conditions',
+  }),
 })
 
 export const registerSchema = z.object({
@@ -21,6 +24,10 @@ export const verifyOtpSchema = z.object({
 })
 
 export const forgotPasswordSchema = z.object({
+  email: z.string().email('Invalid email address'),
+})
+
+export const resendVerificationSchema = z.object({
   email: z.string().email('Invalid email address'),
 })
 

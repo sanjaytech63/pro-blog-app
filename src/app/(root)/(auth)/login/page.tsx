@@ -14,13 +14,19 @@ import { FormField } from '@/components/ui/form-field'
 import { clientError } from '@/utils/clientError'
 import { toast } from 'sonner'
 import { queryClient } from '@/lib/queryClient'
-import { authService } from '@/services/client/auth.service'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Label } from '@/components/ui/label'
 
 export default function LoginPage() {
   const router = useRouter()
 
   const form = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+      acceptTerms: false,
+    },
   })
 
   async function onSubmit(data: LoginInput) {
@@ -64,6 +70,37 @@ export default function LoginPage() {
               {...form.register('password')}
               error={form.formState.errors.password}
             />
+
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Checkbox
+                  id="acceptTerms"
+                  onCheckedChange={(checked) =>
+                    form.setValue('acceptTerms', Boolean(checked))
+                  }
+                />
+                <Label htmlFor="acceptTerms" className="text-sm">
+                  I agree to the{' '}
+                  <Link href="/terms" className="text-primary hover:underline">
+                    Terms & Conditions
+                  </Link>{' '}
+                </Label>
+              </div>
+              <div className="text-right text-sm">
+                <Link
+                  href="/forgot-password"
+                  className="text-primary hover:underline"
+                >
+                  Forgot password?
+                </Link>
+              </div>
+            </div>
+
+            {form.formState.errors.acceptTerms && (
+              <p className="text-destructive text-sm">
+                {form.formState.errors.acceptTerms.message}
+              </p>
+            )}
 
             <SubmitButton label="Login" loading={form.formState.isSubmitting} />
           </form>

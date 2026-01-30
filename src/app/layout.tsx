@@ -4,6 +4,7 @@ import ClientProviders from '@/components/providers/ClientProviders'
 import { Navbar } from '@/components/navbar/navbar'
 import { Footer } from '@/components/footer/footer'
 import { ThemeProvider } from '@/hooks/ThemeProvider'
+import { AuthGate } from '@/components/auth-gate'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://blogmint.com'),
@@ -59,9 +60,11 @@ export default function RootLayout({
       <body className="antialiased">
         <ClientProviders>
           <ThemeProvider>
-            <Navbar />
-            {children}
-            <Footer />
+            <AuthGate>
+              <Navbar />
+              {children}
+              <Footer />
+            </AuthGate>
           </ThemeProvider>
         </ClientProviders>
       </body>

@@ -1,18 +1,34 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { rateLimit } from '@/utils/rateLimit'
-import { getIp } from '@/utils/getIp'
 import { verifyAccessToken } from '@/lib/jwt'
 import { AccessTokenPayload } from '@/types/auth'
+import { rateLimit } from '@/utils/rateLimit'
+import { getIp } from '@/utils/getIp'
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   /* =========================
-     API: RATE LIMIT + CORS
+     SKIP STATIC FILES
+  ========================= */
+  if (pathname.startsWith('/_next') || pathname.startsWith('/favicon.ico')) {
+    return NextResponse.next()
+  }
+
+  /* =========================
+     API RATE LIMIT (SAFE)
   ========================= */
   if (pathname.startsWith('/api')) {
+    // 🚫 DO NOT rate-limit auth identity checks
+    if (
+      pathname.startsWith('/api/users/me') ||
+      pathname.startsWith('/api/auth/login') ||
+      pathname.startsWith('/api/auth/logout')
+    ) {
+      return NextResponse.next()
+    }
+
     const ip = getIp(request)
-    const allowed = rateLimit(ip, 10, 60_000)
+    const allowed = rateLimit(ip, 30, 60_000)
 
     if (!allowed) {
       return NextResponse.json(
@@ -21,24 +37,13 @@ export function proxy(request: NextRequest) {
       )
     }
 
-    const res = NextResponse.next()
-    res.headers.set('Access-Control-Allow-Origin', '*')
-    res.headers.set(
-      'Access-Control-Allow-Methods',
-      'GET, POST, PUT, PATCH, DELETE, OPTIONS',
-    )
-    res.headers.set(
-      'Access-Control-Allow-Headers',
-      'Content-Type, Authorization',
-    )
-    return res
+    return NextResponse.next()
   }
 
   /* =========================
-     AUTH CHECK
+     PAGE AUTH (TOKEN ONLY)
   ========================= */
   const token = request.cookies.get('access_token')?.value
-
   let payload: AccessTokenPayload | null = null
 
   if (token) {
@@ -57,14 +62,10 @@ export function proxy(request: NextRequest) {
   }
 
   /* =========================
-     ROLE-BASED REDIRECT
+     REDIRECT AUTHED USERS
   ========================= */
-  if (payload && pathname === '/login') {
-    if (payload.role === 'admin') {
-      return NextResponse.redirect(new URL('/dashboard', request.url))
-    }
-
-    return NextResponse.redirect(new URL('/', request.url))
+  if (payload && (pathname === '/login' || pathname === '/register')) {
+    return NextResponse.redirect(new URL('/dashboard', request.url))
   }
 
   return NextResponse.next()

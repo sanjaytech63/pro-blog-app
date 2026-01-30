@@ -1,5 +1,5 @@
 import Container from '@/components/container'
-import { privacySections } from '@/libs/constants/legal'
+import { privacySections } from '@/lib/constants/legal'
 
 export default function PrivacyPage() {
   return (

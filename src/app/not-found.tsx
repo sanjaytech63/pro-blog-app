@@ -30,7 +30,11 @@ export default function NotFound() {
             </Link>
           </Button>
 
-          <Button variant="outline" onClick={() => window.history.back()}>
+          <Button
+            className="cursor-pointer"
+            variant="outline"
+            onClick={() => window.history.back()}
+          >
             <ArrowLeft className="mr-2 h-4 w-4" />
             Go back
           </Button>

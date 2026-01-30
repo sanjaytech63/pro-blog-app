@@ -10,47 +10,59 @@ import {
 } from '@/types/auth'
 
 export const authService = {
-  login(data: LoginPayload): Promise<ApiResponse<AuthToken>> {
-    return api.post('/auth/login', data)
+  async login(data: LoginPayload): Promise<ApiResponse<AuthToken>> {
+    const res = await api.post<ApiResponse<AuthToken>>('/auth/login', data)
+    return res.data
   },
 
-  register(data: RegisterPayload): Promise<ApiResponse<AuthUser>> {
-    return api.post('/auth/register', data)
+  async register(data: RegisterPayload): Promise<ApiResponse<AuthUser>> {
+    const res = await api.post<ApiResponse<AuthUser>>('/auth/register', data)
+    return res.data
   },
 
-  forgot(data: ForgotPasswordPayload): Promise<ApiResponse<null>> {
-    return api.post('/auth/forgot-password', data)
+  async forgot(data: ForgotPasswordPayload): Promise<ApiResponse<null>> {
+    const res = await api.post<ApiResponse<null>>('/auth/forgot-password', data)
+    return res.data
   },
 
-  reset(token: string, data: ResetPasswordPayload): Promise<ApiResponse<null>> {
-    return api.post(`/auth/reset-password?token=${token}`, data)
+  async reset(
+    token: string,
+    data: ResetPasswordPayload,
+  ): Promise<ApiResponse<null>> {
+    const res = await api.post<ApiResponse<null>>(
+      `/auth/reset-password?token=${token}`,
+      data,
+    )
+    return res.data
+  },
+
+  async verifyOtp(email: string, otp: string): Promise<ApiResponse<null>> {
+    const res = await api.post<ApiResponse<null>>('/auth/verify-otp', {
+      email,
+      otp,
+    })
+    return res.data
+  },
+
+  async resendOtp(email: string): Promise<ApiResponse<null>> {
+    const res = await api.post<ApiResponse<null>>('/auth/send-otp', { email })
+    return res.data
+  },
+
+  async logout(): Promise<ApiResponse<null>> {
+    const res = await api.post<ApiResponse<null>>('/auth/logout')
+    return res.data
   },
 
   /* =========================
-       VERIFY OTP
-    ========================= */
-  verifyOtp(email: string, otp: string): Promise<ApiResponse<null>> {
-    return api.post('/auth/verify-otp', { email, otp })
-  },
-
-  /* =========================
-       RESEND OTP
-    ========================= */
-  resendOtp(email: string): Promise<ApiResponse<null>> {
-    return api.post('/auth/send-otp', { email })
-  },
-
-  /* =========================
-     LOGOUT
-  ========================= */
-  logout(): Promise<ApiResponse<null>> {
-    return api.post('/auth/logout')
-  },
-
-  /* =========================
-     CURRENT USER
-  ========================= */
-  me(): Promise<ApiResponse<AuthUser>> {
-    return api.get('/users/me')
+       CURRENT USER
+     ========================= */
+  async me(): Promise<AuthUser | null> {
+    try {
+      const res = await api.get<ApiResponse<AuthUser>>('/users/me')
+      return res.data.data
+    } catch {
+      return null
+    }
   },
 }
