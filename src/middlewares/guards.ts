@@ -3,14 +3,14 @@ import { verifyAuth } from './auth.middleware'
 import { requireAdmin } from './requireAdmin'
 
 export function requireUser(req: NextRequest) {
-  const auth = verifyAuth(req)
-  if (auth) return auth
+  const authError = verifyAuth(req)
+  if (authError) return authError
 }
 
 export function requireAdminUser(req: NextRequest) {
-  const auth = verifyAuth(req)
-  if (auth) return auth
+  const authError = verifyAuth(req)
+  if (authError) return authError
 
-  const adminCheck = requireAdmin(req)
-  if (adminCheck) return adminCheck
+  const adminError = requireAdmin(req)
+  if (adminError) return adminError
 }

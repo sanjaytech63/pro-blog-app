@@ -61,10 +61,11 @@ export default function VerifyOtpPage() {
                   maxLength={6}
                   value={field.value}
                   onChange={field.onChange}
+                  className="w-full"
                 >
-                  <InputOTPGroup>
-                    {[...Array(6)].map((_, i) => (
-                      <InputOTPSlot key={i} index={i} />
+                  <InputOTPGroup className="flex w-full gap-2">
+                    {Array.from({ length: 6 }).map((_, i) => (
+                      <InputOTPSlot key={i} index={i} className="flex-1" />
                     ))}
                   </InputOTPGroup>
                 </InputOTP>

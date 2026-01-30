@@ -26,26 +26,11 @@ export default function LoginPage() {
   async function onSubmit(data: LoginInput) {
     try {
       const res = await api.post('/auth/login', data)
-
       toast.success(res.data.message)
 
-      const me = await queryClient.fetchQuery({
-        queryKey: ['me'],
-        queryFn: authService.me,
-      })
+      await queryClient.invalidateQueries({ queryKey: ['me'] })
 
-      const user = me.data
-
-      if (!user.isVerified) {
-        router.replace('/verify-otp')
-        return
-      }
-
-      if (user.role === 'admin') {
-        router.replace('/dashboard')
-      } else {
-        router.replace('/')
-      }
+      router.replace('/')
     } catch (err) {
       clientError(err, 'Invalid email or password')
     }

@@ -1,7 +1,11 @@
-import { requireAuth } from '@/lib/requireAuth'
-import DashboardClient from './DashboardClient'
+import React from 'react'
 
-export default async function DashboardPage() {
-  await requireAuth()
-  return <DashboardClient />
+const page = () => {
+  return (
+    <div className="flex min-h-screen items-center justify-center">
+      <h1>Dashboard</h1>
+    </div>
+  )
 }
+
+export default page

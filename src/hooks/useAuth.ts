@@ -12,13 +12,13 @@ export function useAuth() {
     staleTime: 5 * 60 * 1000,
   })
 
-  const user: AuthUser | null = data?.data ?? null
+  const user: AuthUser | null = data?.data?.data ?? null
 
   return {
     user,
-    role: user?.role ?? 'guest',
     isAuthenticated: !!user,
     isVerified: !!user?.isVerified,
+    role: user?.role ?? 'user',
     isAdmin: user?.role === 'admin',
     isLoading,
     isError,
