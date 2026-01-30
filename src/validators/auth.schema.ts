@@ -32,7 +32,6 @@ export const resendVerificationSchema = z.object({
 })
 
 export const resetPasswordSchema = z.object({
-  token: z.string(),
   password: z.string().min(6, 'Password must be at least 6 characters'),
 })
 

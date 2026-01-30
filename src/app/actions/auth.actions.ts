@@ -9,6 +9,7 @@ import {
   verifyOtpSchema,
   sendOtpSchema,
 } from '@/validators/auth.schema'
+import { env } from '@/config/env'
 
 /* =========================
    HELPERS
@@ -62,19 +63,6 @@ export async function forgotPasswordAction(formData: FormData) {
   const data = parseFormData(formData, forgotPasswordSchema)
 
   await authService.forgot({ email: data.email })
-
-  redirect('/login')
-}
-
-/* =========================
-   RESET PASSWORD
-========================= */
-export async function resetPasswordAction(token: string, formData: FormData) {
-  const data = parseFormData(formData, resetPasswordSchema)
-
-  await authService.reset(token, {
-    password: data.password,
-  })
 
   redirect('/login')
 }

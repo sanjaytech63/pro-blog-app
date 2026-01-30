@@ -7,7 +7,14 @@ import { authService } from '@/services/auth.service'
 
 export const POST = catchAsync(async (req: NextRequest) => {
   await connectDB()
-  const { token, password } = resetPasswordSchema.parse(await req.json())
+
+  const token = req.nextUrl.searchParams.get('token')
+
+  if (!token) {
+    return ApiResponse.error('Token is required', 400)
+  }
+
+  const { password } = resetPasswordSchema.parse(await req.json())
   await authService.resetPassword(token, password)
   return ApiResponse.success(null, 'Password reset successful')
 })
