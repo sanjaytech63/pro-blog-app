@@ -6,19 +6,21 @@ import { catchAsync } from '@/utils/catchAsync'
 import { verifyAuth } from '@/middlewares/auth.middleware'
 import { requireAdmin } from '@/middlewares/requireAdmin'
 
-export const DELETE = catchAsync<'id'>(async (req: NextRequest, { params }) => {
-  const auth = verifyAuth(req)
-  if (auth) return auth
+export const DELETE = catchAsync(
+  async (req: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
+    const auth = await verifyAuth(req)
+    if (auth) return auth
 
-  const adminCheck = requireAdmin(req)
-  if (adminCheck) return adminCheck
+    const adminCheck = await requireAdmin(req)
+    if (adminCheck) return adminCheck
 
-  await connectDB()
+    await connectDB()
 
-  const userId = params.id
-  const adminId = req.user!.id
+    const { id: userId } = await params
+    const adminId = req.user!.id
 
-  const deletedUser = await userService.softDeleteUser(userId, adminId)
+    const deletedUser = await userService.softDeleteUser(userId, adminId)
 
-  return ApiResponse.success(deletedUser, 'User soft deleted')
-})
+    return ApiResponse.success(deletedUser, 'User soft deleted')
+  },
+)

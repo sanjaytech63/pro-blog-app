@@ -6,7 +6,7 @@ import { catchAsync } from '@/utils/catchAsync'
 import { requireAdminUser } from '@/middlewares/guards'
 
 export const GET = catchAsync(async (req: NextRequest) => {
-  const guard = requireAdminUser(req)
+  const guard = await requireAdminUser(req)
   if (guard) return guard
 
   await connectDB()
