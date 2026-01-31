@@ -1,27 +1,38 @@
 'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+
 import AuthLayout from '@/components/layouts/AuthLayout'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { SubmitButton } from '@/components/form/SubmitButton'
 import { Logo } from '@/components/logo'
-import { registerAction } from '@/app/actions/auth.actions'
-import { clientError } from '@/utils/clientError'
-import { registerSchema, RegisterInput } from '@/validators/auth.schema'
 import { FormField } from '@/components/ui/form-field'
 
+import { authService } from '@/services/client/auth.service'
+import { clientError } from '@/utils/clientError'
+import { registerSchema, RegisterInput } from '@/validators/auth.schema'
+import { toast } from 'sonner'
+
 export default function RegisterPage() {
+  const router = useRouter()
+
   const form = useForm<RegisterInput>({
     resolver: zodResolver(registerSchema),
+    defaultValues: {
+      fullName: '',
+      email: '',
+      password: '',
+    },
   })
 
   async function onSubmit(data: RegisterInput) {
     try {
-      const fd = new FormData()
-      Object.entries(data).forEach(([k, v]) => fd.append(k, v))
-      await registerAction(fd)
+      const res = await authService.register(data)
+      toast.success(res.message)
+      router.push('/verify-otp')
     } catch (err) {
       clientError(err, 'Registration failed')
     }

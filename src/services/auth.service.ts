@@ -25,9 +25,10 @@ class AuthService {
       fullName,
       email: normalizedEmail,
       password: hashed,
+      provider: 'credentials',
       verifyOTP: otp,
-      role: 'user',
       verifyOTPExpires: new Date(Date.now() + env.OTP_EXPIRES_MINUTES * 60000),
+      role: 'user',
     })
 
     await emailService.sendOtp(normalizedEmail, otp)

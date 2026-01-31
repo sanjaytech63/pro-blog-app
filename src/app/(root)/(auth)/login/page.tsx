@@ -16,6 +16,8 @@ import { toast } from 'sonner'
 import { queryClient } from '@/lib/queryClient'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
+import { authService } from '@/services/client/auth.service'
+import { OAuthButton } from '@/components/oauth-button'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -31,11 +33,9 @@ export default function LoginPage() {
 
   async function onSubmit(data: LoginInput) {
     try {
-      const res = await api.post('/auth/login', data)
-      toast.success(res.data.message)
-
+      const res = await authService.login(data)
+      toast.success(res.message)
       await queryClient.invalidateQueries({ queryKey: ['me'] })
-
       router.replace('/')
     } catch (err) {
       clientError(err, 'Invalid email or password')
@@ -104,6 +104,32 @@ export default function LoginPage() {
 
             <SubmitButton label="Login" loading={form.formState.isSubmitting} />
           </form>
+
+          <div className="relative my-4">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-background text-muted-foreground px-2">
+                Or continue with
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between gap-3">
+            <OAuthButton
+              provider="google"
+              label="Google"
+              icon="/images/google.svg"
+            />
+
+            <OAuthButton
+              iconsText="invert-0 dark:invert"
+              provider="github"
+              label="GitHub"
+              icon="/images/github.svg"
+            />
+          </div>
 
           <div className="text-muted-foreground text-center text-xs">
             Create account?{' '}

@@ -3,28 +3,34 @@
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { toast } from 'sonner'
+
 import AuthLayout from '@/components/layouts/AuthLayout'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { SubmitButton } from '@/components/form/SubmitButton'
 import { Logo } from '@/components/logo'
-import { forgotPasswordAction } from '@/app/actions/auth.actions'
+import { FormField } from '@/components/ui/form-field'
+
 import { clientError } from '@/utils/clientError'
 import {
   forgotPasswordSchema,
   ForgotPasswordInput,
 } from '@/validators/auth.schema'
-import { FormField } from '@/components/ui/form-field'
+import { authService } from '@/services/client/auth.service'
 
 export default function ForgotPasswordPage() {
   const form = useForm<ForgotPasswordInput>({
     resolver: zodResolver(forgotPasswordSchema),
+    defaultValues: {
+      email: '',
+    },
   })
 
   async function onSubmit(data: ForgotPasswordInput) {
     try {
-      const fd = new FormData()
-      fd.append('email', data.email)
-      await forgotPasswordAction(fd)
+      const res = await authService.forgot({ email: data.email })
+      toast.success(res.message)
+      form.reset()
     } catch (err) {
       clientError(err, 'Unable to send reset link')
     }

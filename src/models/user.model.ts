@@ -3,7 +3,7 @@ import mongoose, { Schema, Types } from 'mongoose'
 export interface IUser {
   fullName: string
   email: string
-  password: string
+  password?: string
   avatar?: string
 
   verifyOTP?: string
@@ -21,6 +21,10 @@ export interface IUser {
   deletedBy?: Types.ObjectId
 
   role: 'user' | 'admin'
+
+  provider: 'credentials' | 'google' | 'github'
+
+  providerId?: string
 }
 
 const userSchema = new Schema<IUser>(
@@ -39,9 +43,23 @@ const userSchema = new Schema<IUser>(
       index: true,
     },
 
+    provider: {
+      type: String,
+      enum: ['credentials', 'google', 'github'],
+      required: true,
+      default: 'credentials',
+    },
+
+    providerId: {
+      type: String,
+      index: true,
+    },
+
     password: {
       type: String,
-      required: true,
+      required: function (this: IUser): boolean {
+        return this.provider === 'credentials'
+      },
       select: false,
     },
 

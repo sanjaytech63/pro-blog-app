@@ -8,8 +8,11 @@ import { ApiResponse } from '@/utils/ApiResponse'
 import { catchAsync } from '@/utils/catchAsync'
 import { loginSchema } from '@/validators/auth.schema'
 import { setAuthCookies } from '@/lib/auth-cookies'
+import { connectDB } from '@/lib/db'
 
 export const POST = catchAsync(async (req) => {
+  await connectDB()
+
   const { email, password } = loginSchema.parse(await req.json())
 
   const { accessToken, refreshToken } = await authService.login(email, password)

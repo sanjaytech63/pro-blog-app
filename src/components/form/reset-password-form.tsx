@@ -15,6 +15,7 @@ import {
 import { FormField } from '@/components/ui/form-field'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
+import { authService } from '@/services/client/auth.service'
 
 export default function ResetPasswordForm({ token }: { token: string }) {
   const router = useRouter()
@@ -25,18 +26,8 @@ export default function ResetPasswordForm({ token }: { token: string }) {
 
   async function onSubmit(data: ResetPasswordInput) {
     try {
-      const res = await fetch(`/api/auth/reset-password?token=${token}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password: data.password }),
-      })
-
-      if (!res.ok) {
-        const err = await res.text()
-        throw new Error(err)
-      }
-
-      toast.success('Password reset successful')
+      const res = await authService.reset(token, data)
+      toast.success(res.message)
       router.replace('/login')
     } catch (err) {
       clientError(err, 'Password reset failed')

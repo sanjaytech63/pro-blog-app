@@ -23,4 +23,10 @@ export const env = Object.freeze({
 
   /* ---------- OTP ---------- */
   OTP_EXPIRES_MINUTES: Number(process.env.OTP_EXPIRES_MINUTES ?? 5),
+  /* ---------- OAuth ---------- */
+  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID ?? '',
+  GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET ?? '',
+
+  GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID ?? '',
+  GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET ?? '',
 })
