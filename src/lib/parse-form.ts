@@ -1,3 +1,3 @@
-export function parseFormData<T>(formData: FormData): Record<string, unknown> {
+export function parseFormData(formData: FormData): Record<string, unknown> {
   return Object.fromEntries(formData.entries())
 }

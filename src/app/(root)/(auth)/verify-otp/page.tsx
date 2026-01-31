@@ -20,7 +20,6 @@ import {
 } from '@/components/ui/input-otp'
 import { FormField } from '@/components/ui/form-field'
 
-import { api } from '@/lib/axios'
 import { clientError } from '@/utils/clientError'
 import { verifyOtpSchema, VerifyOtpInput } from '@/validators/auth.schema'
 import { authService } from '@/services/client/auth.service'
