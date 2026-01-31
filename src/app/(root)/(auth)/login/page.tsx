@@ -70,22 +70,23 @@ export default function LoginPage() {
               error={form.formState.errors.password}
             />
 
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
+            <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+              <div className="flex items-start gap-2">
                 <Checkbox
                   id="acceptTerms"
                   onCheckedChange={(checked) =>
                     form.setValue('acceptTerms', Boolean(checked))
                   }
                 />
-                <Label htmlFor="acceptTerms" className="text-sm">
+                <Label htmlFor="acceptTerms" className="text-sm leading-snug">
                   I agree to the{' '}
                   <Link href="/terms" className="text-primary hover:underline">
                     Terms & Conditions
-                  </Link>{' '}
+                  </Link>
                 </Label>
               </div>
-              <div className="text-right text-sm">
+
+              <div className="text-left text-sm md:text-right">
                 <Link
                   href="/forgot-password"
                   className="text-primary hover:underline"

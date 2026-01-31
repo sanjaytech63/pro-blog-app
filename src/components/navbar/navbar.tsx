@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { Menu, User } from 'lucide-react'
+import { Menu } from 'lucide-react'
 import clsx from 'clsx'
 import { useQueryClient } from '@tanstack/react-query'
 import { AuthUser } from '@/types/auth'
@@ -12,8 +12,8 @@ import { Button } from '@/components/ui/button'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { navItems } from './navbar.constants'
 import { MobileDrawer } from './mobile-drawer'
-import { toast } from 'sonner'
 import { authService } from '@/services/client/auth.service'
+import { toast } from 'sonner'
 
 export function Navbar() {
   const router = useRouter()
@@ -27,7 +27,8 @@ export function Navbar() {
 
   const logout = async () => {
     try {
-      await authService.logout()
+      const res = await authService.logout()
+      toast.success(res.message)
       queryClient.removeQueries({ queryKey: ['me'] })
       router.replace('/login')
     } catch {
@@ -77,10 +78,6 @@ export function Navbar() {
                 </Button>
               </Link>
             )}
-
-            <button className="hover:bg-muted rounded-md p-2 md:hidden">
-              <User className="h-5 w-5" />
-            </button>
 
             <button
               onClick={() => setOpen(true)}
