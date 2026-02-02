@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import ClientProviders from '@/components/providers/ClientProviders'
-import { Navbar } from '@/components/navbar/navbar'
-import { Footer } from '@/components/footer/footer'
 import { ThemeProvider } from '@/hooks/ThemeProvider'
 import { AuthGate } from '@/components/auth-gate'
+import { AppShell } from '@/components/layouts/app-shell'
+import { ScrollToTop } from '@/components/scroll-to-top'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://blogmint.com'),
@@ -61,9 +61,10 @@ export default function RootLayout({
         <ClientProviders>
           <ThemeProvider>
             <AuthGate>
-              <Navbar />
-              {children}
-              <Footer />
+              <AppShell>
+                {children}
+                <ScrollToTop />
+              </AppShell>
             </AuthGate>
           </ThemeProvider>
         </ClientProviders>
