@@ -8,24 +8,17 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
+import { useLogout } from '@/hooks/use-logout'
 
-interface SidebarLogoutProps {
-  onLogout?: () => void
-}
-
-export function SidebarLogout({ onLogout }: SidebarLogoutProps) {
+export function SidebarLogout() {
+  const { logout, isLoggingOut } = useLogout()
   const collapsed = useSidebarStore((s) => s.collapsed)
-
-  const handleLogout = () => {
-    // replace with real logout logic
-    onLogout?.()
-    console.log('logout')
-  }
 
   const content = (
     <Button
       variant="ghost"
-      onClick={handleLogout}
+      onClick={logout}
+      disabled={isLoggingOut}
       className="w-full cursor-pointer justify-start gap-3 px-3"
     >
       <LogOut className="h-4 w-4 shrink-0" />

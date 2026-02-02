@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Menu } from 'lucide-react'
 import { dashboardNav } from '@/lib/constants/dashboard-nav'
 import { cn } from '@/lib/utils'
+import { Logo } from '../logo'
 
 export function MobileSidebar() {
   const pathname = usePathname()
@@ -15,13 +16,13 @@ export function MobileSidebar() {
     <Sheet>
       <SheetTrigger asChild>
         <Button variant="ghost" size="icon" className="lg:hidden">
-          <Menu className="h-5 w-5" />
+          <Menu className="h-6 w-6" />
         </Button>
       </SheetTrigger>
 
       <SheetContent side="left" className="w-64 p-0">
-        <div className="flex h-16 items-center px-6 font-semibold">
-          Admin Panel
+        <div className="flex h-12 items-center px-4 font-semibold">
+          <Logo />
         </div>
 
         <nav className="space-y-1 px-3">

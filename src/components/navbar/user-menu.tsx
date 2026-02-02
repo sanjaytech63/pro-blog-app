@@ -1,0 +1,63 @@
+'use client'
+
+import { LogOut, User } from 'lucide-react'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { AuthUser } from '@/types/auth'
+
+interface UserMenuProps {
+  user: AuthUser
+  onLogout: () => void
+  disabled: boolean
+}
+
+export function UserMenu({ user, onLogout, disabled }: UserMenuProps) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          className="hover:bg-muted focus-visible:ring-ring flex h-10 w-10 cursor-pointer items-center gap-2 rounded-full px-2 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+        >
+          <Avatar className="h-8 w-8">
+            <AvatarFallback>
+              {user.fullName?.charAt(0).toUpperCase() ?? 'U'}
+            </AvatarFallback>
+          </Avatar>
+        </Button>
+      </DropdownMenuTrigger>
+
+      <DropdownMenuContent align="end" className="w-56">
+        <div className="px-3 py-2">
+          <p className="text-sm font-medium">{user.fullName}</p>
+          <p className="text-muted-foreground text-xs">{user.email}</p>
+        </div>
+
+        <DropdownMenuSeparator />
+
+        <DropdownMenuItem>
+          <User className="mr-2 h-4 w-4" />
+          Profile
+        </DropdownMenuItem>
+
+        <DropdownMenuSeparator />
+
+        <DropdownMenuItem
+          onClick={onLogout}
+          disabled={disabled}
+          className="text-destructive focus:text-destructive"
+        >
+          <LogOut className="mr-2 h-4 w-4" />
+          Logout
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}

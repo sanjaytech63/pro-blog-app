@@ -10,26 +10,33 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { AuthUser } from '@/types/auth'
 
-export function UserMenu() {
-  const user = {
-    name: 'Admin User',
-    email: 'admin@blogmint.com',
-  }
+interface UserMenuProps {
+  user: AuthUser
+  onLogout: () => void
+  disabled: boolean
+}
 
+export function DashBoardMenu({ user, onLogout, disabled }: UserMenuProps) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="flex items-center gap-2 px-2">
+      <DropdownMenuTrigger asChild className="h-10 w-10 rounded-full">
+        <Button
+          variant="ghost"
+          className="hover:bg-muted focus-visible:ring-ring flex cursor-pointer items-center gap-2 px-2 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+        >
           <Avatar className="h-8 w-8">
-            <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+            <AvatarFallback>
+              {user.fullName?.charAt(0).toUpperCase() ?? 'U'}
+            </AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end" className="w-56">
         <div className="px-3 py-2">
-          <p className="text-sm font-medium">{user.name}</p>
+          <p className="text-sm font-medium">{user.fullName}</p>
           <p className="text-muted-foreground text-xs">{user.email}</p>
         </div>
 
@@ -47,7 +54,11 @@ export function UserMenu() {
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem className="text-red-600">
+        <DropdownMenuItem
+          disabled={disabled}
+          onClick={onLogout}
+          className="text-destructive focus:text-destructive"
+        >
           <LogOut className="mr-2 h-4 w-4" />
           Logout
         </DropdownMenuItem>

@@ -5,9 +5,9 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
 
-import AuthLayout from '@/components/layouts/AuthLayout'
+import AuthLayout from '@/components/layouts/auth-layout'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { SubmitButton } from '@/components/form/SubmitButton'
+import { SubmitButton } from '@/components/form/submit-button'
 import { Logo } from '@/components/logo'
 import { FormField } from '@/components/ui/form-field'
 

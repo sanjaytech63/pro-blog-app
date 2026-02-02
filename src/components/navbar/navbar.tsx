@@ -2,46 +2,37 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { Menu } from 'lucide-react'
 import clsx from 'clsx'
 import { useQueryClient } from '@tanstack/react-query'
+
 import { AuthUser } from '@/types/auth'
 import { Logo } from '@/components/logo'
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { navItems } from './navbar.constants'
 import { MobileDrawer } from './mobile-drawer'
-import { authService } from '@/services/client/auth.service'
-import { toast } from 'sonner'
+import { UserMenu } from './user-menu'
+import { useLogout } from '@/hooks/use-logout'
 
 export function Navbar() {
-  const router = useRouter()
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const queryClient = useQueryClient()
 
   const user = queryClient.getQueryData<AuthUser | null>(['me'])
-  const isAuthenticated = !!user
-  const isVerified = !!user?.isVerified
-
-  const logout = async () => {
-    try {
-      const res = await authService.logout()
-      toast.success(res.message)
-      queryClient.removeQueries({ queryKey: ['me'] })
-      router.replace('/login')
-    } catch {
-      toast.error('Logout failed')
-    }
-  }
+  const isAuthenticated = !!user && user.isVerified
+  const { logout, isLoggingOut } = useLogout()
 
   return (
     <>
       <header className="bg-background/80 fixed top-0 left-0 z-40 w-full border-b backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
+        <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 md:h-16">
+          {/* Left */}
           <Logo />
 
+          {/* Center (Desktop only) */}
           <nav className="absolute left-1/2 hidden -translate-x-1/2 gap-6 md:flex">
             {navItems.map((item) => (
               <Link
@@ -59,26 +50,22 @@ export function Navbar() {
             ))}
           </nav>
 
-          <div className="flex items-center gap-3">
+          {/* Right */}
+          <div className="flex items-center gap-2">
             <ThemeToggle />
-
-            {isAuthenticated && isVerified ? (
-              <Button
-                size="sm"
-                className="cursor-pointer"
-                variant="outline"
-                onClick={logout}
-              >
-                Logout
-              </Button>
+            {isAuthenticated ? (
+              <UserMenu
+                user={user!}
+                onLogout={logout}
+                disabled={isLoggingOut}
+              />
             ) : (
               <Link href="/login">
-                <Button className="cursor-pointer" size="sm">
-                  Sign In
-                </Button>
+                <Button size="sm">Sign in</Button>
               </Link>
             )}
 
+            {/* Mobile menu */}
             <button
               onClick={() => setOpen(true)}
               className="hover:bg-muted rounded-md p-2 md:hidden"

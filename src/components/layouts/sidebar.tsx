@@ -10,7 +10,6 @@ import { Logo } from '../logo'
 
 export function Sidebar() {
   const collapsed = useSidebarStore((s) => s.collapsed)
-
   return (
     <aside
       className={cn(
