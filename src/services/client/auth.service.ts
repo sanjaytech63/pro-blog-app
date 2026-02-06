@@ -65,4 +65,9 @@ export const authService = {
       return null
     }
   },
+
+  async updateProfile(data: AuthUser): Promise<ApiResponse<AuthUser>> {
+    const res = await api.put<ApiResponse<AuthUser>>('/users/me', data)
+    return res.data
+  },
 }

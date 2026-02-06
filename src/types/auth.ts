@@ -22,12 +22,15 @@ export interface ResetPasswordPayload {
 
 // Response data
 export interface AuthUser {
-  id: string
+  _id: string
   fullName: string
   email: string
   role: 'user' | 'admin'
   userId?: string
   isVerified?: boolean
+  avatar?: string
+  provider?: string
+  isDeleted?: boolean
 }
 
 export interface AuthToken {
@@ -40,4 +43,12 @@ export type AccessTokenPayload = {
   role: 'user' | 'admin'
   iat: number
   exp: number
+}
+
+export interface AdminUsersCache {
+  users: AuthUser[]
+  total: number
+  page: number
+  limit: number
+  _id?: string
 }

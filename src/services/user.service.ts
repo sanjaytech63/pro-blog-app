@@ -2,6 +2,14 @@ import { User } from '@/models/user.model'
 import ApiError from '@/utils/ApiError'
 import { UpdateProfileDto } from '@/validators/user.schema'
 
+interface ListUsersQuery {
+  page?: number
+  limit?: number
+  search?: string
+  includeDeleted?: boolean
+  isDeleted?: boolean
+}
+
 class UserService {
   async getProfile(userId: string) {
     const user = await User.findOne({ _id: userId, isDeleted: false }).select(
@@ -62,23 +70,38 @@ class UserService {
     return true
   }
 
-  async listUsers(query: {
-    page?: number
-    limit?: number
-    includeDeleted?: boolean
-  }) {
-    const { page = 1, limit = 20, includeDeleted = false } = query
+  async list(query: ListUsersQuery) {
+    const { page = 1, limit = 20, search, includeDeleted = false } = query
 
-    const filter: { isDeleted?: boolean } = {}
+    const filter: ListUsersQuery = {}
+
     if (!includeDeleted) filter.isDeleted = false
 
-    const users = await User.find(filter)
-      .select('-password')
-      .skip((page - 1) * limit)
-      .limit(limit)
-      .sort({ createdAt: -1 })
+    if (search) {
+      filter.$or = [
+        { fullName: { $regex: search, $options: 'i' } },
+        { email: { $regex: search, $options: 'i' } },
+      ]
+    }
 
-    return users
+    const [data, total] = await Promise.all([
+      User.find(filter)
+        .select('-password')
+        .sort({ createdAt: -1 })
+        .skip((page - 1) * limit)
+        .limit(limit),
+      User.countDocuments(filter),
+    ])
+
+    return {
+      data,
+      meta: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    }
   }
 
   async getById(userId: string) {

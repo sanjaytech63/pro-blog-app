@@ -20,7 +20,9 @@ export function SettingsSection({
         )}
       </div>
 
-      <div className="bg-background rounded-lg border p-4">{children}</div>
+      <div className="bg-background rounded-xl border p-6 shadow-sm">
+        {children}
+      </div>
 
       <Separator />
     </section>

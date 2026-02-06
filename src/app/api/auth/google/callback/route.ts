@@ -48,6 +48,7 @@ export async function GET(req: Request) {
     user = await User.create({
       fullName: profile.name,
       email,
+      avatar: profile.picture ?? null,
       provider: 'google',
       providerId: profile.id,
       isVerified: true,
@@ -59,8 +60,13 @@ export async function GET(req: Request) {
       user.provider = 'google'
       user.providerId = profile.id
       user.isVerified = true
-      await user.save()
     }
+
+    if (!user.image && profile.picture) {
+      user.avatar = profile.picture
+    }
+
+    await user.save()
   }
 
   /* ---------- Issue tokens ---------- */

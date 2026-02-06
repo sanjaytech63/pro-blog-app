@@ -1,7 +1,7 @@
 'use client'
 
 import { LogOut, User } from 'lucide-react'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -20,13 +20,21 @@ interface UserMenuProps {
 
 export function UserMenu({ user, onLogout, disabled }: UserMenuProps) {
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="hover:bg-muted focus-visible:ring-ring flex h-10 w-10 cursor-pointer items-center gap-2 rounded-full px-2 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+          className="hover:bg-muted focus-visible:ring-ring flex h-10 w-10 items-center justify-center rounded-full focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
         >
-          <Avatar className="h-8 w-8">
+          <Avatar className="h-8 w-8 cursor-pointer">
+            {user?.avatar && (
+              <AvatarImage
+                src={user?.avatar}
+                alt={user?.fullName}
+                referrerPolicy="no-referrer"
+              />
+            )}
+
             <AvatarFallback>
               {user.fullName?.charAt(0).toUpperCase() ?? 'U'}
             </AvatarFallback>
