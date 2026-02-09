@@ -8,6 +8,8 @@ import {
   AuthUser,
   AuthToken,
 } from '@/types/auth'
+import { UpdatePasswordDto } from '@/validators/auth.schema'
+import { UpdateProfileDto } from '@/validators/user.schema'
 
 export const authService = {
   async login(data: LoginPayload): Promise<ApiResponse<AuthToken>> {
@@ -54,9 +56,14 @@ export const authService = {
     return res.data
   },
 
-  /* =========================
-       CURRENT USER
-     ========================= */
+  async updateProfile(data: UpdateProfileDto): Promise<ApiResponse<AuthUser>> {
+    const res = await api.put<ApiResponse<AuthUser>>(
+      '/users/update-profile',
+      data,
+    )
+    return res.data
+  },
+
   async me(): Promise<AuthUser | null> {
     try {
       const res = await api.get<ApiResponse<AuthUser>>('/users/me')
@@ -66,8 +73,20 @@ export const authService = {
     }
   },
 
-  async updateProfile(data: AuthUser): Promise<ApiResponse<AuthUser>> {
-    const res = await api.put<ApiResponse<AuthUser>>('/users/me', data)
+  async updatePassword(data: UpdatePasswordDto): Promise<ApiResponse<null>> {
+    const res = await api.put<ApiResponse<null>>('/users/change-password', data)
+    return res.data
+  },
+
+  async getAvatarUploadSignature() {
+    const res = await api.post<ApiResponse<AuthUser>>('/users/avatar/sign')
+    return res.data.data
+  },
+
+  async updateAvatar(avatar: string) {
+    const res = await api.put<ApiResponse<AuthUser>>('/users/avatar', {
+      avatar,
+    })
     return res.data
   },
 }

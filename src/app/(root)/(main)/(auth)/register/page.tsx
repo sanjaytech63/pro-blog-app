@@ -31,6 +31,7 @@ export default function RegisterPage() {
   async function onSubmit(data: RegisterInput) {
     try {
       const res = await authService.register(data)
+      console.log(res, 'ressyer')
       toast.success(res.message)
       router.push('/verify-otp')
     } catch (err) {

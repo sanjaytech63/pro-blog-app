@@ -1,27 +1,20 @@
+import { AxiosError } from 'axios'
 import { toast } from 'sonner'
 
-type ClientErrorInput = unknown | Error | { message?: string } | string
+export function clientError(error: unknown, fallback = 'Something went wrong') {
+  // Axios error
+  if (error instanceof AxiosError) {
+    const message = error.response?.data?.message || error.message || fallback
 
-/**
- * Normalizes any error coming from Server Actions / APIs
- * and shows a safe toast message on the client.
- */
-export function clientError(
-  err: ClientErrorInput,
-  fallback = 'Something went wrong. Please try again.',
-) {
-  // Standard JS Error (most Server Action errors)
-  if (err instanceof Error) {
-    toast.error(err.message || fallback)
+    toast.error(message)
     return
   }
 
-  // String errors (edge cases)
-  if (typeof err === 'string') {
-    toast.error(err)
+  // Generic error
+  if (error instanceof Error) {
+    toast.error(error.message)
     return
   }
 
-  // Unknown shape → safe fallback
   toast.error(fallback)
 }

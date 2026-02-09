@@ -17,7 +17,6 @@ interface Props {
 export default function AdminUsersClient({
   initialPage,
   initialSearch,
-  includeDeleted,
 }: Props) {
   const router = useRouter()
   const pathname = usePathname()

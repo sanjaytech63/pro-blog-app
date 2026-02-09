@@ -31,6 +31,11 @@ export interface AuthUser {
   avatar?: string
   provider?: string
   isDeleted?: boolean
+  apiKey: string
+  timestamp: string
+  signature: string
+  folder: string
+  cloudName: string
 }
 
 export interface AuthToken {
@@ -43,6 +48,7 @@ export type AccessTokenPayload = {
   role: 'user' | 'admin'
   iat: number
   exp: number
+  isVerified: boolean
 }
 
 export interface AdminUsersCache {

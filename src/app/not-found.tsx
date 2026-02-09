@@ -7,9 +7,6 @@ import { Button } from '@/components/ui/button'
 export default function NotFound() {
   return (
     <div className="bg-background relative flex min-h-screen items-center justify-center px-6">
-      {/* subtle background glow */}
-      <div className="from-primary/10 to-accent/10 pointer-events-none absolute inset-0 bg-gradient-to-br via-transparent" />
-
       <div className="relative z-10 mx-auto max-w-md text-center">
         <div className="bg-destructive/10 text-destructive mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full">
           <AlertTriangle className="h-8 w-8" />
