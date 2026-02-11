@@ -16,7 +16,6 @@ import { Loader } from '@/components/ui/loader'
 import { authService } from '@/services/client/auth.service'
 import { updateProfileSchema, UpdateProfileDto } from '@/validators/user.schema'
 import { AuthUser } from '@/types/auth'
-import { ApiResponse } from '@/types/api'
 import { clientError } from '@/utils/clientError'
 
 type UpdateProfileForm = z.infer<typeof updateProfileSchema>

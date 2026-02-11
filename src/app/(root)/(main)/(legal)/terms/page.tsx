@@ -3,10 +3,12 @@ import { termsSections } from '@/lib/constants/legal'
 
 export default function TermsPage() {
   return (
-    <div className="min-h-screen bg-gray-50 py-28 dark:bg-black">
+    <div className="min-h-screen bg-gray-50 py-20 md:py-28 dark:bg-black">
       <Container size="small">
         <div className="mb-12 text-center">
-          <h1 className="mb-4 text-4xl font-bold">Terms of Service</h1>
+          <h1 className="mb-4 text-2xl font-bold md:text-4xl">
+            Terms of Service
+          </h1>
           <p className="text-muted-foreground">
             Effective date:{' '}
             {new Date().toLocaleDateString('en-US', {

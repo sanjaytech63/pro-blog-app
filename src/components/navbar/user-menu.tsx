@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { AuthUser } from '@/types/auth'
+import Link from 'next/link'
 
 interface UserMenuProps {
   user: AuthUser
@@ -51,8 +52,10 @@ export function UserMenu({ user, onLogout, disabled }: UserMenuProps) {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem>
-          <User className="mr-2 h-4 w-4" />
-          Profile
+          <Link href="/profile" className="flex w-full items-center gap-2">
+            <User className="mr-2 h-4 w-4" />
+            Profile
+          </Link>
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />

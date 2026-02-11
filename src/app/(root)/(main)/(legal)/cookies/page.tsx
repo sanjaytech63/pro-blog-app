@@ -3,10 +3,10 @@ import { cookiesSections } from '@/lib/constants/legal'
 
 export default function CookiesPage() {
   return (
-    <div className="min-h-screen bg-gray-50 py-28 dark:bg-black">
+    <div className="min-h-screen bg-gray-50 py-20 md:py-28 dark:bg-black">
       <Container size="small">
         <header className="mb-12 text-center">
-          <h1 className="text-4xl font-bold">Cookie Policy</h1>
+          <h1 className="text-2xl font-bold md:text-4xl">Cookie Policy</h1>
           <p className="text-muted-foreground mt-2 text-sm">
             Last updated:{' '}
             {new Date().toLocaleDateString('en-US', {
