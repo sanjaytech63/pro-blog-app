@@ -5,6 +5,7 @@ import { ThemeProvider } from '@/hooks/theme-provider'
 import { AuthGate } from '@/components/auth-gate'
 import { AppShell } from '@/components/layouts/app-shell'
 import { ScrollToTop } from '@/components/scroll-to-top'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://blogmint.com'),
@@ -68,6 +69,7 @@ export default function RootLayout({
             </AuthGate>
           </ThemeProvider>
         </ClientProviders>
+        <SpeedInsights />
       </body>
     </html>
   )
