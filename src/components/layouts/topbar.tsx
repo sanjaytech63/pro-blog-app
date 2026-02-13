@@ -7,6 +7,7 @@ import { DashBoardMenu } from './dashboard-user-menu'
 import { MobileSidebar } from './mobile-sidebar'
 import { useQueryClient } from '@tanstack/react-query'
 import { useLogout } from '@/hooks/use-logout'
+import { ThemeToggle } from '../theme-toggle'
 
 export function Topbar() {
   const queryClient = useQueryClient()
@@ -20,7 +21,10 @@ export function Topbar() {
       </div>
 
       <div className="ml-auto flex items-center gap-2">
+        <ThemeToggle />
+
         <NotificationsMenu />
+
         {user && (
           <DashBoardMenu
             user={user}
