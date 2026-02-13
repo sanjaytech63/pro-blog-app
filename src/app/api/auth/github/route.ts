@@ -1,5 +1,8 @@
 import { githubAuthUrl } from '@/services/oauth.service'
+import { catchAsync } from '@/utils/catchAsync'
+import { NextRequest } from 'next/server'
 
-export async function GET() {
-  return Response.redirect(githubAuthUrl())
-}
+export const GET = catchAsync(async (req: NextRequest) => {
+  const origin = new URL(req.url).origin
+  return Response.redirect(githubAuthUrl(origin))
+})

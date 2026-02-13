@@ -5,6 +5,8 @@ import { User } from '@/models/user.model'
 import { signAccessToken, signRefreshToken } from '@/lib/jwt'
 import { setAuthCookies } from '@/lib/auth-cookies'
 import { env } from '@/config/env'
+import { NextRequest } from 'next/server'
+import { catchAsync } from '@/utils/catchAsync'
 
 interface GitHubEmail {
   email: string
@@ -13,8 +15,11 @@ interface GitHubEmail {
   visibility: 'public' | 'private' | null
 }
 
-export async function GET(req: Request) {
+export const GET = catchAsync(async (req: NextRequest) => {
   await connectDB()
+
+  const urlObj = new URL(req.url)
+  const origin = urlObj.origin
 
   const { searchParams } = new URL(req.url)
   const code = searchParams.get('code')
@@ -109,5 +114,5 @@ export async function GET(req: Request) {
   /* ---------- Set cookies & redirect ---------- */
   await setAuthCookies(accessToken, refreshToken)
 
-  return Response.redirect(env.NEXT_PUBLIC_BASE_URL)
-}
+  return Response.redirect(`${origin}/`)
+})

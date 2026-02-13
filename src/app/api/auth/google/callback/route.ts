@@ -5,9 +5,14 @@ import { User } from '@/models/user.model'
 import { signAccessToken, signRefreshToken } from '@/lib/jwt'
 import { setAuthCookies } from '@/lib/auth-cookies'
 import { env } from '@/config/env'
+import { catchAsync } from '@/utils/catchAsync'
+import { NextRequest } from 'next/server'
 
-export async function GET(req: Request) {
+export const GET = catchAsync(async (req: NextRequest) => {
   await connectDB()
+
+  const urlObj = new URL(req.url)
+  const origin = urlObj.origin
 
   const { searchParams } = new URL(req.url)
   const code = searchParams.get('code')
@@ -23,7 +28,7 @@ export async function GET(req: Request) {
       client_id: env.GOOGLE_CLIENT_ID,
       client_secret: env.GOOGLE_CLIENT_SECRET,
       code,
-      redirect_uri: `https://pro-blog-app.vercel.app/api/auth/google/callback`,
+      redirect_uri: `${origin}/api/auth/google/callback`,
       grant_type: 'authorization_code',
     },
   )
@@ -91,5 +96,5 @@ export async function GET(req: Request) {
   /* ---------- Set cookies & redirect ---------- */
   await setAuthCookies(accessToken, refreshToken)
 
-  return Response.redirect(env.NEXT_PUBLIC_BASE_URL)
-}
+  return Response.redirect(`${origin}/`)
+})
