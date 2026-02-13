@@ -3,12 +3,10 @@
 import { Loader } from 'lucide-react'
 
 export const FullPageLoader = () => (
-  <div className="flex min-h-screen items-center justify-center bg-white text-gray-900 dark:bg-black dark:text-white">
-    <div className="flex items-center gap-3">
-      <Loader className="text-primary dark:text-primary h-5 w-5 animate-spin" />
-      <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
-        Loading…
-      </span>
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+    <div className="flex items-center gap-3 rounded-xl bg-white/10 px-6 py-4 shadow-lg backdrop-blur-md">
+      <Loader className="h-5 w-5 animate-spin text-white" />
+      <span className="text-sm font-medium text-white">Loading…</span>
     </div>
   </div>
 )
