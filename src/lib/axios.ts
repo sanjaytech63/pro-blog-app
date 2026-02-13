@@ -1,7 +1,8 @@
 import axios from 'axios'
+import { env } from '@/config/env'
 
 export const api = axios.create({
-  baseURL: `/api`,
+  baseURL: `${env.NEXT_PUBLIC_BASE_URL}/api`,
   withCredentials: true,
   timeout: 15000,
 })
