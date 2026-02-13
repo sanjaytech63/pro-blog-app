@@ -10,6 +10,7 @@ interface ListUsersQuery {
   search?: string
   includeDeleted?: boolean
   isDeleted?: boolean
+  $or?: Array<{ [key: string]: { $regex: string; $options: string } }>
 }
 
 class UserService {
