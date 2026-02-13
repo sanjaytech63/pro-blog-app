@@ -1,8 +1,7 @@
 import axios from 'axios'
-import { env } from '@/config/env'
 
 export const api = axios.create({
-  baseURL: `${env.NEXT_PUBLIC_BASE_URL}/api`,
+  baseURL: `https://pro-blog-app.vercel.app/api`,
   withCredentials: true,
   timeout: 15000,
 })
