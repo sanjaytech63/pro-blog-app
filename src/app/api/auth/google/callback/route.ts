@@ -23,7 +23,7 @@ export async function GET(req: Request) {
       client_id: env.GOOGLE_CLIENT_ID,
       client_secret: env.GOOGLE_CLIENT_SECRET,
       code,
-      redirect_uri: `${env.NEXT_PUBLIC_BASE_URL}/api/auth/google/callback`,
+      redirect_uri: `https://pro-blog-app.vercel.app/api/auth/google/callback`,
       grant_type: 'authorization_code',
     },
   )
