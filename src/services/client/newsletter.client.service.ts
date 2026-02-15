@@ -16,9 +16,10 @@ export const newsletterService = {
     limit: number
     search?: string
   }): Promise<NewsletterListResponse> {
-    const res = await api.get<NewsletterListResponse>('/newsletter/admin', {
-      params,
-    })
+    const res = await api.get<{ data: NewsletterListResponse }>(
+      '/newsletter/admin',
+      { params },
+    )
 
     return res.data.data
   },
