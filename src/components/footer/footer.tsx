@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import { Phone, Mail, MapPin } from 'lucide-react'
 import { Logo } from '@/components/logo'
-import { NewsletterForm } from './newsletter-form'
 import { footerMenus, socialLinks } from './footer.constants'
+import { NewsletterForm } from './newsletter-form'
 
 export function Footer() {
   const year = new Date().getFullYear()
