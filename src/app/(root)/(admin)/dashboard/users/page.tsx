@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import AdminUsersClient from './client'
 
 interface PageProps {
