@@ -16,6 +16,5 @@ export function useAdminUsers(query: ListUsersQuery) {
     queryKey: ['admin-users', query],
     queryFn: () => adminUserService.list(query),
     placeholderData: (previousData) => previousData,
-    staleTime: 30_000,
   })
 }

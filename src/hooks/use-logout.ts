@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import { authService } from '@/services/client/auth.service'
-import { queryClient } from '@/lib/queryClient'
+import { useAuthStore } from '@/store/auth.store'
 
 export function useLogout() {
   const router = useRouter()
@@ -15,14 +15,9 @@ export function useLogout() {
 
     try {
       setIsLoggingOut(true)
-
       const res = await authService.logout()
-
-      queryClient.removeQueries({ queryKey: ['me'] })
-      queryClient.clear()
-
+      useAuthStore.getState().logout()
       toast.success(res.message || 'Logged out successfully')
-
       router.replace('/login')
     } catch {
       toast.error('Logout failed')

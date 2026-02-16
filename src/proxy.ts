@@ -1,7 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyAccessToken } from '@/lib/jwt'
-import { AccessTokenPayload } from '@/types/auth'
-import { logRedirect } from '@/lib/logger'
+import type { AccessTokenPayload } from '@/types/auth'
+
+/**
+ * PUBLIC ROUTES
+ * These routes are accessible without authentication
+ */
+const PUBLIC_ROUTES = ['/', '/login', '/register']
+
+/**
+ * ADMIN ROUTES
+ * Any route starting with this requires admin role
+ */
+const ADMIN_PREFIX = '/dashboard'
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -9,6 +20,9 @@ export function proxy(request: NextRequest) {
 
   let payload: AccessTokenPayload | null = null
 
+  // =============================
+  // VERIFY TOKEN
+  // =============================
   if (token) {
     try {
       payload = verifyAccessToken<AccessTokenPayload>(token)
@@ -17,41 +31,47 @@ export function proxy(request: NextRequest) {
     }
   }
 
-  /* =========================
-     DASHBOARD ACCESS
-  ========================= */
-  if (pathname.startsWith('/dashboard')) {
-    if (!payload) {
-      logRedirect(pathname, '/login', 'no_token')
-      return NextResponse.redirect(new URL('/login', request.url))
-    }
+  const isPublicRoute = PUBLIC_ROUTES.includes(pathname)
+  const isAdminRoute = pathname.startsWith(ADMIN_PREFIX)
 
-    if (payload.role !== 'admin') {
-      logRedirect(pathname, '/unauthorized', 'not_admin')
-      return NextResponse.redirect(new URL('/unauthorized', request.url))
-    }
-
-    if (payload.role === 'admin' && !pathname.startsWith('/dashboard')) {
-      return NextResponse.redirect(new URL('/dashboard', request.url))
-    }
-
-    // if (payload.role === 'user' && !pathname.startsWith('/dashboard')) {
-    //   return NextResponse.redirect(new URL('/dashboard', request.url))
-    // }
+  // =============================
+  // 1️⃣ NOT AUTHENTICATED
+  // =============================
+  if (!payload && !isPublicRoute) {
+    return NextResponse.redirect(new URL('/login', request.url))
   }
 
-  /* =========================
-     AUTH PAGES
-  ========================= */
+  // =============================
+  // 2️⃣ AUTH PAGES (Already Logged In)
+  // =============================
   if (payload && (pathname === '/login' || pathname === '/register')) {
     return NextResponse.redirect(
       new URL(payload.role === 'admin' ? '/dashboard' : '/', request.url),
     )
   }
 
+  // =============================
+  // 3️⃣ ADMIN ACCESS CONTROL
+  // =============================
+  if (payload && isAdminRoute && payload.role !== 'admin') {
+    return NextResponse.redirect(new URL('/unauthorized', request.url))
+  }
+
+  // =============================
+  // 4️⃣ ALLOW REQUEST
+  // =============================
   return NextResponse.next()
 }
 
+/**
+ * MATCHER
+ * Protect everything except:
+ * - Next.js internals
+ * - Static files
+ * - API routes (protect separately)
+ */
 export const config = {
-  matcher: ['/dashboard/:path*', '/login', '/register'],
+  matcher: [
+    '/((?!_next/static|_next/image|favicon.ico|api|images|.*\\.(?:png|jpg|jpeg|svg|webp|gif|ico)).*)',
+  ],
 }

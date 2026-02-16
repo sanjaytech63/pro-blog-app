@@ -12,11 +12,11 @@ import { Logo } from '@/components/logo'
 import { FormField } from '@/components/ui/form-field'
 import { clientError } from '@/utils/clientError'
 import { toast } from 'sonner'
-import { queryClient } from '@/lib/queryClient'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
 import { authService } from '@/services/client/auth.service'
 import { OAuthButton } from '@/components/oauth-button'
+import { useAuthStore } from '@/store/auth.store'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -34,7 +34,8 @@ export default function LoginPage() {
     try {
       const res = await authService.login(data)
       toast.success(res.message)
-      await queryClient.invalidateQueries({ queryKey: ['me'] })
+      const me = await authService.me()
+      useAuthStore.getState().setUser(me)
       router.replace('/')
     } catch (err) {
       clientError(err, 'Invalid email or password')

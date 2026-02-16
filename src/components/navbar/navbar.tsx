@@ -5,9 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Menu } from 'lucide-react'
 import clsx from 'clsx'
-import { useQueryClient } from '@tanstack/react-query'
 
-import { AuthUser } from '@/types/auth'
 import { Logo } from '@/components/logo'
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from '@/components/theme-toggle'
@@ -15,14 +13,13 @@ import { navItems } from './navbar.constants'
 import { MobileDrawer } from './mobile-drawer'
 import { UserMenu } from './user-menu'
 import { useLogout } from '@/hooks/use-logout'
+import { useAuthStore } from '@/store/auth.store'
 
 export function Navbar() {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
-  const queryClient = useQueryClient()
-
-  const user = queryClient.getQueryData<AuthUser | null>(['me'])
-  const isAuthenticated = !!user && user.isVerified
+  const user = useAuthStore((s) => s.user)
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
   const { logout, isLoggingOut } = useLogout()
 
   return (
@@ -61,7 +58,9 @@ export function Navbar() {
               />
             ) : (
               <Link href="/login">
-                <Button size="sm">Sign in</Button>
+                <Button size="sm" className="cursor-pointer">
+                  Sign in
+                </Button>
               </Link>
             )}
 

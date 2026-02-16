@@ -6,6 +6,7 @@ import { AuthGate } from '@/components/auth-gate'
 import { AppShell } from '@/components/layouts/app-shell'
 import { ScrollToTop } from '@/components/scroll-to-top'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import { AuthInitializer } from '@/components/auth-initializer'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://blogmint.com'),
@@ -60,13 +61,12 @@ export default function RootLayout({
     <html lang="en">
       <body className="antialiased">
         <ClientProviders>
+          <AuthInitializer />
           <ThemeProvider>
-            <AuthGate>
-              <AppShell>
-                {children}
-                <ScrollToTop />
-              </AppShell>
-            </AuthGate>
+            <AppShell>
+              {children}
+              <ScrollToTop />
+            </AppShell>
           </ThemeProvider>
         </ClientProviders>
         <SpeedInsights />

@@ -4,19 +4,17 @@ import { useRef, useState } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { SettingsSection } from './settings-section'
-import { useQueryClient } from '@tanstack/react-query'
 import { AuthUser } from '@/types/auth'
 import { authService } from '@/services/client/auth.service'
 import { toast } from 'sonner'
 import { Loader } from '@/components/ui/loader'
 import { clientError } from '@/utils/clientError'
+import { useAuthStore } from '@/store/auth.store'
 
 export function ProfileImageSettings() {
   const inputRef = useRef<HTMLInputElement>(null)
   const [uploading, setUploading] = useState(false)
-  const queryClient = useQueryClient()
-
-  const me = queryClient.getQueryData<AuthUser>(['me'])
+  const me = useAuthStore((s) => s.user)
 
   if (!me) return null
 
@@ -53,9 +51,8 @@ export function ProfileImageSettings() {
       const uploadData = await uploadRes.json()
 
       const res = await authService.updateAvatar(uploadData.secure_url)
-
-      queryClient.setQueryData<AuthUser>(['me'], res.data)
-
+      const me = await authService.me()
+      useAuthStore.getState().setUser(me)
       toast.success(res.message)
     } catch (error) {
       clientError(error, 'Failed to update avatar')
