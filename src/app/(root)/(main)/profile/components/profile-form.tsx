@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { toast } from 'sonner'
-import { useQueryClient } from '@tanstack/react-query'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -14,15 +13,14 @@ import { Loader } from '@/components/ui/loader'
 
 import { authService } from '@/services/client/auth.service'
 import { updateProfileSchema, UpdateProfileDto } from '@/validators/user.schema'
-import { AuthUser } from '@/types/auth'
 import { clientError } from '@/utils/clientError'
+import { useAuthStore } from '@/store/auth.store'
 
 type UpdateProfileForm = z.infer<typeof updateProfileSchema>
 
 export function ProfileForm() {
   const [loading, setLoading] = useState(false)
-  const queryClient = useQueryClient()
-  const meResponse = queryClient.getQueryData<AuthUser>(['me'])
+  const { user } = useAuthStore()
 
   const {
     register,
@@ -34,19 +32,20 @@ export function ProfileForm() {
   })
 
   useEffect(() => {
-    if (meResponse) {
+    if (user) {
       reset({
-        fullName: meResponse.fullName,
-        email: meResponse.email,
+        fullName: user.fullName,
+        email: user.email,
       })
     }
-  }, [meResponse, reset])
+  }, [user, reset])
 
   const onSubmit = async (data: UpdateProfileDto) => {
     try {
       setLoading(true)
       const res = await authService.updateProfile(data)
-      queryClient.setQueryData<AuthUser>(['me'], res.data)
+      const me = await authService.me()
+      useAuthStore.getState().setUser(me)
       reset({
         fullName: res.data.fullName,
         email: res.data.email,
@@ -82,9 +81,9 @@ export function ProfileForm() {
           </p>
         </div>
 
-        {meResponse && (
+        {user && (
           <div className="bg-muted rounded-md px-4 py-3 text-sm">
-            Logged in with <strong>{meResponse.provider}</strong>
+            Logged in with <strong>{user.provider}</strong>
           </div>
         )}
 
