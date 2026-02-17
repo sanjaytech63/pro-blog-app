@@ -61,13 +61,15 @@ export default function RootLayout({
     <html lang="en">
       <body className="antialiased">
         <ClientProviders>
-          <AuthInitializer />
-          <ThemeProvider>
-            <AppShell>
-              {children}
-              <ScrollToTop />
-            </AppShell>
-          </ThemeProvider>
+          <AuthGate>
+            <AuthInitializer />
+            <ThemeProvider>
+              <AppShell>
+                {children}
+                <ScrollToTop />
+              </AppShell>
+            </ThemeProvider>
+          </AuthGate>
         </ClientProviders>
         <SpeedInsights />
       </body>
