@@ -28,7 +28,6 @@ api.interceptors.response.use(
         await api.post('/auth/refresh-token')
         return api(original)
       } catch {
-        // 🔥 refresh failed → force logout
         try {
           await api.post('/auth/logout')
         } catch {}

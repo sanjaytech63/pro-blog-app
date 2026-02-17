@@ -12,8 +12,6 @@ export function useAuth() {
   } = useQuery<AuthUser | null>({
     queryKey: ['me'],
     queryFn: authService.me,
-    staleTime: 5 * 60 * 1000,
-    gcTime: 30 * 60 * 1000,
     retry: false,
   })
 
