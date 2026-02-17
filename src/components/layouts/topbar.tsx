@@ -2,16 +2,14 @@
 
 import { Logo } from '../logo'
 import { NotificationsMenu } from './notifications-menu'
-import { AuthUser } from '@/types/auth'
 import { DashBoardMenu } from './dashboard-user-menu'
 import { MobileSidebar } from './mobile-sidebar'
-import { useQueryClient } from '@tanstack/react-query'
 import { useLogout } from '@/hooks/use-logout'
 import { ThemeToggle } from '../theme-toggle'
+import { useAuthStore } from '@/store/auth.store'
 
 export function Topbar() {
-  const queryClient = useQueryClient()
-  const user = queryClient.getQueryData<AuthUser | null>(['me'])
+  const user = useAuthStore((s) => s.user)
   const { logout, isLoggingOut } = useLogout()
 
   return (
