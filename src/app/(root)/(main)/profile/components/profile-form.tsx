@@ -15,12 +15,15 @@ import { authService } from '@/services/client/auth.service'
 import { updateProfileSchema, UpdateProfileDto } from '@/validators/user.schema'
 import { clientError } from '@/utils/clientError'
 import { useAuthStore } from '@/store/auth.store'
+import { useLogout } from '@/hooks/use-logout'
+import { ConfirmActionDialog } from '@/components/common/confirm-action-dialog'
 
 type UpdateProfileForm = z.infer<typeof updateProfileSchema>
 
 export function ProfileForm() {
   const [loading, setLoading] = useState(false)
   const { user } = useAuthStore()
+  const { logout, isLoggingOut } = useLogout()
 
   const {
     register,
@@ -87,7 +90,7 @@ export function ProfileForm() {
           </div>
         )}
 
-        <div className="flex justify-end md:col-span-2">
+        <div className="flex justify-end gap-4 md:col-span-2">
           <Button
             className="cursor-pointer"
             type="submit"
@@ -95,6 +98,16 @@ export function ProfileForm() {
           >
             {loading ? <Loader label="Saving..." /> : 'Save changes'}
           </Button>
+          <ConfirmActionDialog
+            title="Are you sure you want to logout?"
+            description="You will need to log in again to access your account."
+            confirmLabel="Logout"
+            cancelLabel="Stay logged in"
+            variant="destructive"
+            loading={isLoggingOut}
+            onConfirm={logout}
+            trigger={<Button className="cursor-pointer">Logout</Button>}
+          />
         </div>
       </form>
     </div>
