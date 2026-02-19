@@ -6,8 +6,12 @@ import { postService } from '@/services/post.service'
 import { requireAdminUser } from '@/middlewares/guards'
 import { NextRequest } from 'next/server'
 
+type RouteContext = {
+  params: Promise<{ id: string }>
+}
+
 export const PUT = catchAsync(
-  async (req: NextRequest, { params }: { params: { id: string } }) => {
+  async (req: NextRequest, { params }: RouteContext) => {
     await connectDB()
 
     const guard = await requireAdminUser(req)
@@ -24,7 +28,7 @@ export const PUT = catchAsync(
 )
 
 export const DELETE = catchAsync(
-  async (req: NextRequest, { params }: { params: { id: string } }) => {
+  async (req: NextRequest, { params }: RouteContext) => {
     await connectDB()
 
     const guard = await requireAdminUser(req)
