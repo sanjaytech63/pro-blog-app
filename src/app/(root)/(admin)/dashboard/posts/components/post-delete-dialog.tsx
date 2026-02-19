@@ -12,7 +12,6 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Loader } from '@/components/ui/loader'
 import { useDeletePost } from '@/hooks/admin/use-posts'
-import { Loader2 } from 'lucide-react'
 
 interface Props {
   postId: string | null
