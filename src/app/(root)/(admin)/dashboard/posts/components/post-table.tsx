@@ -50,7 +50,7 @@ export default function PostTable({
 
   return (
     <div className="bg-background overflow-x-auto rounded-xl border">
-      <Table className="min-w-[720px]">
+      <Table className="w-full">
         <TableHeader>
           <TableRow>
             <TableHead>Post</TableHead>
@@ -81,8 +81,8 @@ export default function PostTable({
                       )}
                     </div>
 
-                    <div>
-                      <p className="line-clamp-1 font-medium">{post.title}</p>
+                    <div className="max-w-2xl">
+                      <p className="truncate font-medium">{post.title}</p>
                       <p className="text-muted-foreground text-xs">
                         {new Date(post.createdAt).toLocaleDateString()}
                       </p>

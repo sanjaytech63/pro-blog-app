@@ -7,7 +7,7 @@ import {
   UpdatePostDTO,
 } from '@/types/post'
 
-interface ListPostsParams {
+export interface ListPostsParams {
   page?: number
   limit?: number
   search?: string

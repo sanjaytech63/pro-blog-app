@@ -1,7 +1,5 @@
+import LandingPage from './(root)/(main)/(marketing)/page'
+
 export default function Home() {
-  return (
-    <div className="flex min-h-screen items-center justify-center">
-      <h1 className="text-3xl font-bold">Home Ci-Cd</h1>
-    </div>
-  )
+  return <LandingPage />
 }

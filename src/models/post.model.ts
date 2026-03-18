@@ -30,7 +30,7 @@ const PostSchema = new Schema<IPost>(
     excerpt: String,
     coverImage: String,
     author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    category: { type: String, index: true },
+    category: { type: String, index: true, lowercase: true },
     tags: [{ type: String, index: true }],
     likesCount: { type: Number, default: 0 },
     commentsCount: { type: Number, default: 0 },
