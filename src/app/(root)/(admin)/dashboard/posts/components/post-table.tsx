@@ -82,7 +82,9 @@ export default function PostTable({
                     </div>
 
                     <div className="max-w-2xl">
-                      <p className="truncate font-medium">{post.title}</p>
+                      <p className="truncate font-medium capitalize">
+                        {post.title}
+                      </p>
                       <p className="text-muted-foreground text-xs">
                         {new Date(post.createdAt).toLocaleDateString()}
                       </p>
@@ -102,7 +104,7 @@ export default function PostTable({
                   </Badge>
                 </TableCell>
 
-                <TableCell>{post.category}</TableCell>
+                <TableCell className="capitalize">{post.category}</TableCell>
 
                 <TableCell className="text-right">
                   <div className="flex justify-end gap-2">

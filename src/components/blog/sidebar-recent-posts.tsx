@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import dayjs from 'dayjs'
-import { Post } from '@/types/blog'
 import { EmptyState } from '../common/empty-state'
+import { Post } from '@/types/post'
 
 interface SidebarRecentPostsProps {
   posts: Post[]
@@ -18,7 +18,7 @@ export function SidebarRecentPosts({ posts }: SidebarRecentPostsProps) {
     )
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 capitalize">
       {posts.map((post) => (
         <Link
           key={post._id}

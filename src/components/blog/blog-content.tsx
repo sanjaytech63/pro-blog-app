@@ -1,7 +1,7 @@
-import { Post } from '@/types/blog'
 import { PostGrid } from './post-grid'
 import { BlogSidebar } from './blog-sidebar'
 import Container from '../container'
+import { Post } from '@/types/post'
 
 interface Category {
   id: string

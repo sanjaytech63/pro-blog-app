@@ -7,10 +7,9 @@ import { usePosts } from '@/hooks/admin/use-posts'
 import { PostEntity } from '@/types/post'
 import { Pagination } from '@/components/common/pagination'
 import PostFilters from './components/post-filters'
-import PostTable from './components/post-table'
 import PostFormDialog from './components/post-form-dialog'
 import PostDeleteDialog from './components/post-delete-dialog'
-// import PostDeleteDialog from './components/post-delete-dialog'
+import PostTable from './components/post-table'
 
 export default function AdminPostsPage() {
   const [page, setPage] = useState(1)

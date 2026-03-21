@@ -1,10 +1,10 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { Post } from '@/types/blog'
 import { Card, CardContent } from '@/components/ui/card'
 import dayjs from 'dayjs'
 import { stripHtml } from '@/utils/stripHtml'
 import { OptimizedImage } from '../opt-image'
+import { Post } from '@/types/post'
 
 interface PostCardProps {
   post: Post

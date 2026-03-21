@@ -9,7 +9,7 @@ import { BlogActions } from '../component/blog-actions'
 import { BlogContent } from '@/components/blog/blog-content'
 import { BlogAuthor } from '../component/blog-author'
 import { BlogComments } from '../component/blog-comments'
-import { Post } from '@/types/blog'
+import { Post } from '@/types/post'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -52,9 +52,6 @@ export default async function BlogDetailsPage({ params }: Props) {
         },
       ]
     : []
-
-  console.log(posts, 'posts')
-  console.log(categories, 'categories')
 
   const recentPosts: Post[] = posts
 

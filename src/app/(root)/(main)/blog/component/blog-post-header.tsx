@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
-import { Post } from '@/types/blog'
 import { OptimizedImage } from '@/components/opt-image'
+import { Post } from '@/types/post'
 
 interface Props {
   post: Post

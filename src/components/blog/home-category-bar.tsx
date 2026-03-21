@@ -2,13 +2,18 @@
 
 import { useSearchParams, useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { Category } from '@/types/blog'
 
-interface HomeCategoryBarProps {
+interface Category {
+  id: string
+  slug: string
+  name: string
+}
+
+interface Props {
   categories: Category[]
 }
 
-export function HomeCategoryBar({ categories }: HomeCategoryBarProps) {
+export function HomeCategoryBar({ categories }: Props) {
   const searchParams = useSearchParams()
   const router = useRouter()
   const active = searchParams.get('category')

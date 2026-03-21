@@ -1,6 +1,6 @@
-import { Post } from '@/types/blog'
 import { PostCard } from './post-card'
 import { EmptyState } from '../common/empty-state'
+import { Post } from '@/types/post'
 
 interface PostGridProps {
   posts: Post[]
@@ -17,7 +17,7 @@ export function PostGrid({ posts = [] }: PostGridProps) {
   }
 
   return (
-    <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid gap-8 capitalize sm:grid-cols-2 lg:grid-cols-4">
       {posts?.map((post) => (
         <PostCard key={post._id} post={post} />
       ))}

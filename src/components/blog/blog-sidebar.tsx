@@ -1,4 +1,4 @@
-import { Post } from '@/types/blog'
+import { Post } from '@/types/post'
 import { CategoryFilter } from './category-filter'
 import { SidebarRecentPosts } from './sidebar-recent-posts'
 

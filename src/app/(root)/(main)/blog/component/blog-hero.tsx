@@ -1,8 +1,8 @@
 import dayjs from 'dayjs'
 import readingTime from 'reading-time'
-import { Post } from '@/types/blog'
 import { OptimizedImage } from '@/components/opt-image'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
+import { Post } from '@/types/post'
 
 interface Props {
   post: Post
@@ -13,7 +13,7 @@ export function BlogHero({ post }: Props) {
   const stats = readingTime(content)
 
   return (
-    <div className="mb-14">
+    <div className="mb-14 capitalize">
       <div className="mb-6 flex items-center gap-3">
         <Avatar>
           <AvatarImage src={post.author.fullName} />

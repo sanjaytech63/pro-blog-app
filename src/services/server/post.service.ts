@@ -2,7 +2,7 @@ import 'server-only'
 import { cache } from 'react'
 import { ListPostsParams } from '../client/post.service'
 import { env } from '@/config/env'
-import { Post } from '@/types/blog'
+import { Post } from '@/types/post'
 
 export const getPosts = cache(async (params?: ListPostsParams) => {
   const query = new URLSearchParams(params as Record<string, string>).toString()

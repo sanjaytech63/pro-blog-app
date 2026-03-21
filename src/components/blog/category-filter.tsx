@@ -41,7 +41,7 @@ export function CategoryFilter({ categories }: CategoryFilterProps) {
         All
       </Button>
 
-      {categories.map((category) => (
+      {categories?.map((category) => (
         <Button
           key={category.id}
           variant={activeCategory === category.slug ? 'default' : 'outline'}
@@ -51,6 +51,7 @@ export function CategoryFilter({ categories }: CategoryFilterProps) {
             'transition-colors',
             activeCategory === category.slug && 'shadow-sm',
           )}
+          style={{ textTransform: 'capitalize' }}
         >
           {category.name}
         </Button>
