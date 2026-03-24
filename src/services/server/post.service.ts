@@ -3,11 +3,12 @@ import { cache } from 'react'
 import { ListPostsParams } from '../client/post.service'
 import { env } from '@/config/env'
 import { Post } from '@/types/post'
+const baseUrl = env.APP_URL
 
 export const getPosts = cache(async (params?: ListPostsParams) => {
   const query = new URLSearchParams(params as Record<string, string>).toString()
 
-  const res = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/posts?${query}`, {
+  const res = await fetch(`${baseUrl}/api/posts?${query}`, {
     next: {
       revalidate: 60,
       tags: ['posts'],
@@ -22,7 +23,7 @@ export const getPosts = cache(async (params?: ListPostsParams) => {
 })
 
 export const getPostBySlug = cache(async (slug: string) => {
-  const res = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/posts/${slug}`, {
+  const res = await fetch(`${baseUrl}/api/posts/${slug}`, {
     next: {
       revalidate: 60,
       tags: ['post', slug],
