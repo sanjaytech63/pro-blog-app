@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import { Phone, Mail, MapPin } from 'lucide-react'
 import { Logo } from '@/components/logo'
@@ -9,7 +11,7 @@ export function Footer() {
 
   return (
     <footer className="bg-background border-t">
-      <div className="mx-auto max-w-7xl px-4 py-16">
+      <div className="mx-auto max-w-7xl px-4 py-6">
         {/* Top */}
         <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-6">
           {/* Brand */}
@@ -66,9 +68,11 @@ export function Footer() {
               <NewsletterForm />
             </div>
 
-            <div>
-              <h5 className="mb-3 text-sm font-semibold">Follow us</h5>
-              <div className="flex gap-4">
+            <div className="">
+              <h5 className="mb-3 text-center text-sm font-semibold sm:text-left">
+                Follow us
+              </h5>
+              <div className="flex items-center justify-center gap-4 sm:justify-start">
                 {socialLinks.map((social) => {
                   const Icon = social.icon
                   return (
@@ -90,16 +94,26 @@ export function Footer() {
         </div>
 
         {/* Bottom */}
-        <div className="text-muted-foreground mt-16 flex flex-col gap-4 border-t pt-6 text-sm md:flex-row md:justify-between">
+        <div className="text-muted-foreground mt-10 flex flex-col items-center gap-4 border-t pt-6 text-center text-sm md:flex-row md:justify-between md:text-left">
           <p>© {year} BlogMint. All rights reserved.</p>
-          <div className="flex gap-6">
-            <Link href="/privacy" className="hover:text-foreground">
+
+          <div className="flex flex-wrap justify-center gap-6 md:justify-start">
+            <Link
+              href="/privacy"
+              className="hover:text-foreground transition-colors"
+            >
               Privacy
             </Link>
-            <Link href="/terms" className="hover:text-foreground">
+            <Link
+              href="/terms"
+              className="hover:text-foreground transition-colors"
+            >
               Terms
             </Link>
-            <Link href="/cookies" className="hover:text-foreground">
+            <Link
+              href="/cookies"
+              className="hover:text-foreground transition-colors"
+            >
               Cookies
             </Link>
           </div>

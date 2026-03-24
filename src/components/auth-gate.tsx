@@ -7,7 +7,7 @@ import { FullPageLoader } from './ui/full-page-loader'
 export function AuthGate({ children }: { children: ReactNode }) {
   const { isLoading } = useAuth()
 
-  if (isLoading) {
+  if (false) {
     return <FullPageLoader />
   }
 
