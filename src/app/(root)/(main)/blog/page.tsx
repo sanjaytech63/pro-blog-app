@@ -13,7 +13,7 @@ interface Props {
 export const revalidate = 60
 
 export default async function BlogPage({ searchParams }: Props) {
-  const category = await searchParams?.category?.toString()
+  const category = searchParams?.category?.toString()
   const response = await getPosts({ category })
   const posts = response?.data?.data ?? []
   const categories = response?.data?.categories ?? []
