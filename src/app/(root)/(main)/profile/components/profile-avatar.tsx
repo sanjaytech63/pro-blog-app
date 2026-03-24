@@ -3,21 +3,16 @@
 import { useRef, useState } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
-import { useQueryClient } from '@tanstack/react-query'
-import { AuthUser } from '@/types/auth'
 import { authService } from '@/services/client/auth.service'
 import { toast } from 'sonner'
 import { Loader } from '@/components/ui/loader'
 import { clientError } from '@/utils/clientError'
+import { useAuthStore } from '@/store/auth.store'
 
 export function ProfileAvatar() {
   const inputRef = useRef<HTMLInputElement>(null)
   const [uploading, setUploading] = useState(false)
-  const queryClient = useQueryClient()
-
-  const me = queryClient.getQueryData<AuthUser>(['me'])
-
-  if (!me) return null
+  const { user } = useAuthStore()
 
   const handleSelect = async (file: File) => {
     if (!file.type.startsWith('image/')) {
@@ -33,10 +28,8 @@ export function ProfileAvatar() {
     try {
       setUploading(true)
 
-      // 1️⃣ Get signed params
       const sign = await authService.getAvatarUploadSignature()
 
-      // 2️⃣ Upload to Cloudinary
       const form = new FormData()
       form.append('file', file)
       form.append('api_key', sign.apiKey)
@@ -53,7 +46,8 @@ export function ProfileAvatar() {
 
       const res = await authService.updateAvatar(uploadData.secure_url)
 
-      queryClient.setQueryData<AuthUser>(['me'], res.data)
+      const me = await authService.me()
+      useAuthStore.getState().setUser(me)
 
       toast.success(res.message)
     } catch (error) {
@@ -66,17 +60,15 @@ export function ProfileAvatar() {
   return (
     <div className="flex flex-col items-center justify-center gap-6 text-center">
       <Avatar className="h-20 w-20">
-        {me.avatar && (
+        {user?.avatar ? (
           <AvatarImage
-            src={me.avatar}
-            alt={me.fullName}
+            src={user.avatar}
+            alt={user.fullName}
             referrerPolicy="no-referrer"
           />
-        )}
-
-        {!me.avatar && (
+        ) : (
           <AvatarFallback>
-            {me.fullName?.charAt(0).toUpperCase() ?? 'U'}
+            {user?.fullName?.charAt(0)?.toUpperCase() ?? 'U'}
           </AvatarFallback>
         )}
       </Avatar>
