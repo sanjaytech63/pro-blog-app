@@ -10,15 +10,15 @@ export function OptimizedImage({
   priority?: boolean
 }) {
   return (
-    <div className="aspect-video overflow-hidden">
+    <div className="relative aspect-video h-54 overflow-hidden">
       <Image
-        src={src || '/images/placeholder.jpg'}
+        src={src || '/images/bluer-image.png'}
         alt={alt || 'Blog image'}
         fill
         priority={priority}
-        quality={85}
+        quality={75}
         placeholder="blur"
-        blurDataURL="/images/blur-placeholder.jpg"
+        blurDataURL="/images/bluer-image.png"
         sizes="
           (max-width: 640px) 100vw,
           (max-width: 1024px) 50vw,

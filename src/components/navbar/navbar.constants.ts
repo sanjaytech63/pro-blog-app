@@ -1,4 +1,4 @@
-import { Home, Sparkles, CreditCard } from 'lucide-react'
+import { Home, Sparkles } from 'lucide-react'
 
 export const navItems = [
   {
