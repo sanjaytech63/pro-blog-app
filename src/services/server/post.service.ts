@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import 'server-only'
 import { cache } from 'react'
 import { ListPostsParams } from '../client/post.service'
@@ -8,7 +9,7 @@ import { Post } from '@/types/post'
 export const getPosts = cache(async (params?: ListPostsParams) => {
   const query = new URLSearchParams(params as Record<string, string>).toString()
 
-  const res = await fetch(`/api/posts?${query}`, {
+  const res = await fetch(`http://localhost:3000/api/posts?${query}`, {
     next: {
       revalidate: 60,
       tags: ['posts'],
@@ -23,7 +24,7 @@ export const getPosts = cache(async (params?: ListPostsParams) => {
 })
 
 export const getPostBySlug = cache(async (slug: string) => {
-  const res = await fetch(`/api/posts/${slug}`, {
+  const res = await fetch(`http://localhost:3000/api/posts/${slug}`, {
     next: {
       revalidate: 60,
       tags: ['post', slug],
