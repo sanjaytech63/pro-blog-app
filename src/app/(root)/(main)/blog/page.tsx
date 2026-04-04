@@ -5,16 +5,22 @@ import { Section } from '@/components/common/section'
 import { getPosts } from '@/services/server/post.service'
 
 interface Props {
-  searchParams: {
-    category: string
-  }
+  searchParams: Promise<{
+    category?: string
+  }>
 }
 
 export const revalidate = 60
 
 export default async function BlogPage({ searchParams }: Props) {
-  const category = searchParams?.category?.toString()
-  const response = await getPosts({ category })
+  const resolvedSearchParams = await searchParams
+
+  const category = resolvedSearchParams?.category
+
+  const response = await getPosts({
+    ...(category ? { category } : {}),
+  })
+
   const posts = response?.data?.data ?? []
   const categories = response?.data?.categories ?? []
 
