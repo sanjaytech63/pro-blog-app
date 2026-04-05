@@ -66,8 +66,8 @@ export const authService = {
 
   async me(): Promise<AuthUser | null> {
     try {
-      const res = await api.get<ApiResponse<AuthUser>>('/users/me')
-      return res.data.data
+      const res = await api.get<ApiResponse<AuthUser | null>>('/users/me')
+      return res.data.success ? (res.data.data ?? null) : null
     } catch {
       return null
     }
