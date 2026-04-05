@@ -4,6 +4,7 @@ import slugify from 'slugify'
 import cloudinary from '@/lib/cloudinary'
 import { CreatePostDto, UpdatePostDto } from '@/validators/post.schema'
 import mongoose from 'mongoose'
+import { log } from 'console'
 
 interface ListPostsQuery {
   page?: number
@@ -83,6 +84,9 @@ class PostService {
         .lean(),
       Post.countDocuments(filter),
     ])
+
+    log('PostService.list - filter:', filter)
+    log('PostService.list - data:', data)
 
     return {
       data,

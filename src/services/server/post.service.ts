@@ -14,7 +14,7 @@ export const getPosts = cache(async (params?: ListPostsParams) => {
     filteredParams as Record<string, string>,
   ).toString()
 
-  const res = await fetch(`${env.APP_URL}/api/posts?${query}`, {
+  const res = await fetch(`/posts?${query}`, {
     cache: 'no-store',
     next: {
       // revalidate: 60,
@@ -35,7 +35,7 @@ export const getPosts = cache(async (params?: ListPostsParams) => {
 })
 
 export const getPostBySlug = cache(async (slug: string) => {
-  const res = await fetch(`${env.APP_URL}/api/posts/${slug}`, {
+  const res = await fetch(`/posts/${slug}`, {
     cache: 'no-store',
     next: {
       // revalidate: 60,

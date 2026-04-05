@@ -7,6 +7,8 @@ export default async function RecentPosts() {
 
   const list = posts?.data?.data ?? []
 
+  console.log('RecentPosts - fetched posts:', posts)
+
   if (!list.length) {
     return <EmptyState />
   }

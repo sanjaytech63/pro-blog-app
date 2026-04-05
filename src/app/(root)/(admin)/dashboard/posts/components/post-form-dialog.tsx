@@ -1,5 +1,7 @@
 'use client'
 
+import React, { useEffect, useMemo, useState, useRef } from 'react'
+import dynamic from 'next/dynamic'
 import {
   Dialog,
   DialogContent,
@@ -19,16 +21,18 @@ import {
 
 import { useForm, Controller, SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect, useMemo, useState } from 'react'
 
 import { createPostSchema, CreatePostDto } from '@/validators/post.schema'
 import { useCreatePost, useUpdatePost } from '@/hooks/admin/use-posts'
 import { PostEntity } from '@/types/post'
 
 import CoverImageUpload from '@/components/common/cover-image-upload'
-import RichTextEditor from './RichTextEditor'
 import { clientError } from '@/utils/clientError'
 import { z } from 'zod'
+
+const JoditEditor = dynamic(() => import('jodit-react'), {
+  ssr: false,
+})
 
 interface Props {
   open: boolean
@@ -71,6 +75,24 @@ export default function PostFormDialog({ open, onClose, post }: Props) {
     watch,
     formState: { errors, isSubmitting },
   } = form
+
+  const editorRef = useRef<string>(null)
+
+  const editorConfig = useMemo(
+    () => ({
+      readonly: false,
+      height: 360,
+      placeholder: 'Start typings...',
+      toolbarSticky: false,
+      toolbarButtonSize: 'middle',
+      buttons:
+        'bold,italic,underline,strikethrough,|,ul,ol,|,link,|,align,|,outdent,indent,|,source',
+      showXPathInStatusbar: false,
+      showCharsCounter: false,
+      showWordsCounter: false,
+    }),
+    [],
+  )
 
   useEffect(() => {
     if (open) {
@@ -140,9 +162,13 @@ export default function PostFormDialog({ open, onClose, post }: Props) {
               render={({ field }) => (
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Content</label>
-                  <RichTextEditor
-                    value={field.value}
-                    onChange={field.onChange}
+                  <JoditEditor
+                    ref={editorRef}
+                    value={field.value || ''}
+                    config={editorConfig}
+                    onBlur={(newContent) => {
+                      field.onChange(newContent)
+                    }}
                   />
                   {errors.content && (
                     <p className="text-sm text-red-400">

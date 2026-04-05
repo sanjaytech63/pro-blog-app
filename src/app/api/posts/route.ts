@@ -2,7 +2,6 @@ import { connectDB } from '@/lib/db'
 import { ApiResponse } from '@/utils/ApiResponse'
 import { catchAsync } from '@/utils/catchAsync'
 import { postService } from '@/services/post.service'
-import '@/models/user.model' // Ensure User model is registered
 
 export const GET = catchAsync(async (req) => {
   await connectDB()
