@@ -4,8 +4,8 @@ export const env = Object.freeze({
 
   APP_URL: process.env.APP_URL || 'http://localhost:3000',
 
-  NEXT_PUBLIC_BASE_URL:
-    process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000',
+  NEXT_PUBLIC_API_URL:
+    process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000',
 
   /* ---------- Database ---------- */
   MONGO_URI: process.env.MONGO_URI ?? '',

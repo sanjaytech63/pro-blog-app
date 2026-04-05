@@ -137,7 +137,7 @@ class AuthService {
     user.resetPasswordExpires = new Date(Date.now() + 10 * 60 * 1000)
     await user.save()
 
-    const resetUrl = `${env.NEXT_PUBLIC_BASE_URL}/reset-password?token=${rawToken}`
+    const resetUrl = `${env.APP_URL}/reset-password?token=${rawToken}`
     await emailService.sendResetPassword(normalizedEmail, resetUrl)
     log(rawToken)
 
