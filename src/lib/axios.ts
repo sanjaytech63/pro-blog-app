@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+// Use relative URLs by default (same domain in prod)
+// Only use absolute URL if environment variable explicitly set for a different domain
 export const api = axios.create({
   baseURL: '',
   withCredentials: true,
