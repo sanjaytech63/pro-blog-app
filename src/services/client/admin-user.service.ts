@@ -12,18 +12,18 @@ export interface ListUsersQuery {
 
 export const adminUserService = {
   async list(query: ListUsersQuery): Promise<PaginatedUsers> {
-    const res = await api.get('/users', { params: query })
+    const res = await api.get('/api/users', { params: query })
 
     return res.data?.data
   },
 
   async restore(userId: string): Promise<ApiResponse<AuthUser>> {
-    const res = await api.patch(`/users/${userId}/restore`)
+    const res = await api.patch(`/api/users/${userId}/restore`)
     return res.data
   },
 
   async permanentDelete(userId: string): Promise<ApiResponse<null>> {
-    const res = await api.delete(`/users/${userId}/permanent`)
+    const res = await api.delete(`/api/users/${userId}/permanent`)
     return res.data
   },
 }
