@@ -6,7 +6,14 @@ import type { AccessTokenPayload } from '@/types/auth'
  * PUBLIC ROUTES
  * These routes are accessible without authentication
  */
-const PUBLIC_ROUTES = ['/', '/login', '/register']
+const PUBLIC_ROUTES = [
+  '/',
+  '/login',
+  '/register',
+  '/verify-otp',
+  '/reset-password',
+  '/forgot-password',
+]
 
 /**
  * ADMIN ROUTES
