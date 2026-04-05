@@ -4,10 +4,8 @@ import { cache } from 'react'
 import { ListPostsParams } from '../client/post.service'
 import { env } from '@/config/env'
 import { Post } from '@/types/post'
-// const baseUrl = env.APP_URL
 
 export const getPosts = cache(async (params?: ListPostsParams) => {
-  console.log('env:', env.APP_URL)
   const filteredParams = Object.fromEntries(
     Object.entries(params || {}).filter(([_, v]) => v !== undefined),
   )
@@ -16,7 +14,7 @@ export const getPosts = cache(async (params?: ListPostsParams) => {
     filteredParams as Record<string, string>,
   ).toString()
 
-  const res = await fetch(`http://localhost:3000/api/posts?${query}`, {
+  const res = await fetch(`${env.APP_URL}/api/posts?${query}`, {
     cache: 'no-store',
     next: {
       // revalidate: 60,
@@ -25,14 +23,19 @@ export const getPosts = cache(async (params?: ListPostsParams) => {
   })
 
   if (!res.ok) {
-    throw new Error('Failed to fetch posts')
+    console.error('Failed to fetch posts:', res.status, res.statusText)
+    return {
+      success: true,
+      message: '',
+      data: { data: [], meta: { page: 1, limit: 10, total: 0, totalPages: 0 } },
+    }
   }
 
   return res.json()
 })
 
 export const getPostBySlug = cache(async (slug: string) => {
-  const res = await fetch(`http://localhost:3000/api/posts/${slug}`, {
+  const res = await fetch(`${env.APP_URL}/api/posts/${slug}`, {
     cache: 'no-store',
     next: {
       // revalidate: 60,
