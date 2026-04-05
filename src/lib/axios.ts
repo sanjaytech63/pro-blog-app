@@ -1,8 +1,8 @@
-// import { env } from '@/config/env'
+import { env } from '@/config/env'
 import axios from 'axios'
 
 export const api = axios.create({
-  baseURL: '',
+  baseURL: env.APP_URL || '',
   withCredentials: true,
   timeout: 15000,
 })
