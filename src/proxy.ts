@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyAccessToken } from '@/lib/jwt'
 import type { AccessTokenPayload } from '@/types/auth'
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://pro-blog-app.vercel.app',
+]
 
 /**
  * PUBLIC ROUTES
@@ -22,6 +26,28 @@ const PUBLIC_ROUTES = [
 const ADMIN_PREFIX = '/dashboard'
 
 export function proxy(request: NextRequest) {
+  const origin = request.headers.get('origin') || ''
+
+  const isAllowed = allowedOrigins.includes(origin)
+
+  const res = NextResponse.next()
+
+  if (isAllowed) {
+    res.headers.set('Access-Control-Allow-Origin', origin)
+  }
+
+  res.headers.set('Access-Control-Allow-Credentials', 'true')
+  res.headers.set(
+    'Access-Control-Allow-Methods',
+    'GET,POST,PUT,PATCH,DELETE,OPTIONS',
+  )
+  res.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+
+  // Handle preflight
+  if (request.method === 'OPTIONS') {
+    return new NextResponse(null, { status: 200, headers: res.headers })
+  }
+
   const { pathname } = request.nextUrl
   const token = request.cookies.get('access_token')?.value
 
