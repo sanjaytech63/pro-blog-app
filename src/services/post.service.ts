@@ -70,12 +70,9 @@ class PostService {
     if (!includeDeleted) filter.isDeleted = false
     if (status) filter.status = status
     if (category) filter.category = category
-    // if (search) {
-    //   filter.$or = [
-    //     { title: { $regex: search, $options: 'i' } },
-    //     { content: { $regex: search, $options: 'i' } },
-    //   ]
-    // }
+    if (search) {
+      filter.$text = { $search: search }
+    }
 
     const [data, total] = await Promise.all([
       Post.find(filter)
