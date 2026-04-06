@@ -33,8 +33,6 @@ const JoditEditor = dynamic(() => import('jodit-react'), {
   ssr: false,
 })
 
-import type { Jodit } from 'jodit'
-
 interface Props {
   open: boolean
   onClose: () => void
@@ -76,7 +74,7 @@ export default function PostFormDialog({ open, onClose, post }: Props) {
     formState: { errors, isSubmitting },
   } = form
 
-  const editorRef = useRef<Jodit | null>(null)
+  const editorRef = useRef<null>(null)
 
   const editorConfig = useMemo<
     Partial<{
