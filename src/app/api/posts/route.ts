@@ -9,8 +9,8 @@ export const GET = catchAsync(async (req) => {
   const { searchParams } = new URL(req.url)
 
   const posts = await postService.list({
-    page: Number(searchParams.get('page')),
-    limit: Number(searchParams.get('limit')),
+    page: Number(searchParams.get('page') || 1),
+    limit: Number(searchParams.get('limit') || 10),
     search: searchParams.get('search') || undefined,
     status: searchParams.get('status') as 'DRAFT' | 'PUBLISHED',
   })

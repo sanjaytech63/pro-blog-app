@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import { Card, CardContent } from '@/components/ui/card'
 import dayjs from 'dayjs'
-import { stripHtml } from '@/utils/stripHtml'
 import { OptimizedImage } from '../opt-image'
 import { Post } from '@/types/post'
 
@@ -29,9 +28,9 @@ export function PostCard({ post }: PostCardProps) {
           </h3>
         </Link>
 
-        <p className="text-muted-foreground mt-3 line-clamp-4 text-sm">
-          {stripHtml(post.content)}
-        </p>
+        <div className="prose prose-neutral dark:prose-invert line-clamp-5 max-w-none">
+          <div dangerouslySetInnerHTML={{ __html: post.content }} />
+        </div>
       </CardContent>
     </Card>
   )

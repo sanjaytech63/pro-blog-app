@@ -1,28 +1,24 @@
 import { BlogHero } from '@/components/blog/blog-hero'
 import { BlogContent } from '@/components/blog/blog-content'
 import { Section } from '@/components/common/section'
-
-import { getPosts } from '@/services/server/post.service'
+import { getPosts } from '@/services/server/post.api'
 
 interface Props {
-  searchParams: Promise<{
+  searchParams: {
     category?: string
-  }>
+  }
 }
 
-export const revalidate = 60
-
 export default async function BlogPage({ searchParams }: Props) {
-  const resolvedSearchParams = await searchParams
-
-  const category = resolvedSearchParams?.category
+  const category = searchParams?.category
 
   const response = await getPosts({
+    status: 'PUBLISHED',
     ...(category ? { category } : {}),
   })
 
-  const posts = response?.data?.data ?? []
-  const categories = response?.data?.categories ?? []
+  const posts = response?.data ?? []
+  const categories = response?.categories ?? []
 
   return (
     <Section>

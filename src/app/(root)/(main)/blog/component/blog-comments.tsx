@@ -15,7 +15,7 @@ export function BlogComments() {
   }
 
   return (
-    <div className="mt-16">
+    <div className="">
       <h3 className="mb-4 text-xl font-semibold">Comments</h3>
 
       <textarea

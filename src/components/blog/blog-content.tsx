@@ -21,13 +21,15 @@ export function BlogContent({
   recentPosts,
 }: BlogContentProps) {
   return (
-    <Container className="py-16">
+    <Container className="px-4! py-16">
       <div className="grid gap-8 lg:grid-cols-[5fr_1fr]">
         <div>
           <PostGrid posts={posts} />
         </div>
 
-        <BlogSidebar categories={categories} recentPosts={recentPosts} />
+        <div className="rounded-2xl border p-4">
+          <BlogSidebar categories={categories} recentPosts={recentPosts} />
+        </div>
       </div>
     </Container>
   )

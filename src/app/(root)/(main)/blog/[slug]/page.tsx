@@ -1,21 +1,17 @@
-import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import { Section } from '@/components/common/section'
 import Container from '@/components/container'
-import { getPostBySlug } from '@/services/server/post.service'
 import { ReadingProgress } from '../component/reading-progress'
 import { BlogHero } from '../component/blog-hero'
-import { BlogActions } from '../component/blog-actions'
-import { BlogContent } from '@/components/blog/blog-content'
 import { BlogAuthor } from '../component/blog-author'
 import { BlogComments } from '../component/blog-comments'
-import { Post } from '@/types/post'
+import { getPostBySlug } from '@/services/server/post.api'
+import { EmptyState } from '@/components/common/empty-state'
+import { SinglePostContent } from '../component/single-post-content'
 
 interface Props {
   params: Promise<{ slug: string }>
 }
-
-export const revalidate = 60
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
@@ -26,59 +22,37 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: post.title,
     description: post.content.slice(0, 160),
-    openGraph: {
-      title: post.title,
-      description: post.content.slice(0, 160),
-      images: [post.coverImage || ''],
-    },
   }
 }
 
 export default async function BlogDetailsPage({ params }: Props) {
   const { slug } = await params
+  const post = await getPostBySlug(slug)
 
-  const post: Post | null = await getPostBySlug(slug)
-
-  if (!post) notFound()
-
-  const posts: Post[] = [post]
-
-  const categories = post?.category
-    ? [
-        {
-          id: post.category,
-          name: post.category,
-          slug: post.category.toLowerCase().replace(/\s+/g, '-'),
-        },
-      ]
-    : []
-
-  const recentPosts: Post[] = posts
+  if (!post) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <EmptyState title="Post Not Found" />
+      </div>
+    )
+  }
 
   return (
     <>
       <ReadingProgress />
-
       <Section>
-        <Container className="max-w-4xl">
-          <BlogHero post={post} />
-
-          <BlogActions />
-
-          <BlogContent
-            posts={posts}
-            categories={categories}
-            recentPosts={recentPosts}
-          />
-
-          <BlogAuthor
-            author={{
-              fullName: post.author.fullName,
-              avatar: post.author.avatar || '/images/default-avatar.png',
-            }}
-          />
-
-          <BlogComments />
+        <Container>
+          <main className="space-y-10">
+            <BlogHero post={post} />
+            <SinglePostContent post={post} />
+            <BlogAuthor
+              author={{
+                fullName: post.author.fullName,
+                avatar: post.author.avatar || '/images/default-avatar.png',
+              }}
+            />
+            <BlogComments />
+          </main>
         </Container>
       </Section>
     </>

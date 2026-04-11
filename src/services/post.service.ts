@@ -85,9 +85,6 @@ class PostService {
       Post.countDocuments(filter),
     ])
 
-    log('PostService.list - filter:', filter)
-    log('PostService.list - data:', data)
-
     return {
       data,
       meta: {
