@@ -4,7 +4,6 @@ import slugify from 'slugify'
 import cloudinary from '@/lib/cloudinary'
 import { CreatePostDto, UpdatePostDto } from '@/validators/post.schema'
 import mongoose from 'mongoose'
-import { log } from 'console'
 
 interface ListPostsQuery {
   page?: number
@@ -71,8 +70,12 @@ class PostService {
     if (!includeDeleted) filter.isDeleted = false
     if (status) filter.status = status
     if (category) filter.category = category
+
     if (search) {
-      filter.$text = { $search: search }
+      filter.$or = [
+        { title: { $regex: search, $options: 'i' } },
+        { category: { $regex: search, $options: 'i' } },
+      ]
     }
 
     const [data, total] = await Promise.all([

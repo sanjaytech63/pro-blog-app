@@ -31,7 +31,7 @@ class PostClientService {
 
   async getPosts(params?: ListPostsParams) {
     const res = await api.get<ApiResponse<PaginatedResponse<PostEntity>>>(
-      '/posts',
+      '/api/posts',
       { params },
     )
 
@@ -39,7 +39,7 @@ class PostClientService {
   }
 
   async getPostBySlug(slug: string) {
-    const res = await api.get<ApiResponse<PostEntity>>(`/posts/${slug}`)
+    const res = await api.get<ApiResponse<PostEntity>>(`/api/posts/${slug}`)
 
     return res.data
   }
@@ -47,22 +47,24 @@ class PostClientService {
   /* ------------------ Admin APIs ------------------ */
 
   async createPost(payload: CreatePostPayload) {
-    const res = await api.post('/admin/posts', payload)
+    const res = await api.post('/api/admin/posts', payload)
     return res.data
   }
 
   async updatePost(id: string, payload: UpdatePostDTO) {
-    const res = await api.put(`/admin/posts/${id}`, payload)
+    const res = await api.put(`/api/admin/posts/${id}`, payload)
     return res.data
   }
 
   async deletePost(id: string) {
-    const res = await api.delete(`/admin/posts/${id}`)
+    const res = await api.delete(`/api/admin/posts/${id}`)
     return res.data
   }
 
   async restorePost(id: string) {
-    const res = await api.patch<ApiResponse<PostEntity>>(`/posts/${id}/restore`)
+    const res = await api.patch<ApiResponse<PostEntity>>(
+      `/api/posts/${id}/restore`,
+    )
 
     return res.data
   }

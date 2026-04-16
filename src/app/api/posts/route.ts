@@ -13,6 +13,7 @@ export const GET = catchAsync(async (req) => {
     limit: Number(searchParams.get('limit') || 10),
     search: searchParams.get('search') || undefined,
     status: searchParams.get('status') as 'DRAFT' | 'PUBLISHED',
+    category: searchParams.get('category') || undefined,
   })
 
   return ApiResponse.success(posts)
