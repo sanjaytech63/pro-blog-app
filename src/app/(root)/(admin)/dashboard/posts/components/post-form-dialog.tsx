@@ -1,5 +1,7 @@
 'use client'
 
+import React, { useEffect, useMemo, useState, useRef } from 'react'
+import dynamic from 'next/dynamic'
 import {
   Dialog,
   DialogContent,
@@ -19,16 +21,17 @@ import {
 
 import { useForm, Controller, SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect, useMemo, useState } from 'react'
 
 import { createPostSchema, CreatePostDto } from '@/validators/post.schema'
 import { useCreatePost, useUpdatePost } from '@/hooks/admin/use-posts'
 import { PostEntity } from '@/types/post'
 
 import CoverImageUpload from '@/components/common/cover-image-upload'
-import RichTextEditor from './RichTextEditor'
 import { clientError } from '@/utils/clientError'
-import { z } from 'zod'
+
+const JoditEditor = dynamic(() => import('jodit-react'), {
+  ssr: false,
+})
 
 interface Props {
   open: boolean
@@ -36,10 +39,9 @@ interface Props {
   post?: PostEntity | null
 }
 
-type FormValues = z.infer<typeof createPostSchema>
-
 export default function PostFormDialog({ open, onClose, post }: Props) {
   const isEdit = !!post
+
   const [uploading, setUploading] = useState(false)
 
   const createMutation = useCreatePost()
@@ -57,7 +59,7 @@ export default function PostFormDialog({ open, onClose, post }: Props) {
     [post],
   )
 
-  const form = useForm<FormValues>({
+  const form = useForm<CreatePostDto>({
     resolver: zodResolver(createPostSchema),
     defaultValues,
   })
@@ -72,6 +74,52 @@ export default function PostFormDialog({ open, onClose, post }: Props) {
     formState: { errors, isSubmitting },
   } = form
 
+  const editorRef = useRef<null>(null)
+
+  const editorConfig = useMemo<
+    Partial<{
+      readonly: boolean
+      height: number
+      placeholder: string
+      toolbarSticky: boolean
+      toolbarButtonSize: 'small' | 'middle' | 'large'
+      buttons: string[]
+      showXPathInStatusbar: boolean
+      showCharsCounter: boolean
+      showWordsCounter: boolean
+    }>
+  >(
+    () => ({
+      readonly: false,
+      height: 360,
+      placeholder: 'Start typing...',
+      toolbarSticky: false,
+      toolbarButtonSize: 'middle',
+      buttons: [
+        'bold',
+        'italic',
+        'underline',
+        'strikethrough',
+        '|',
+        'ul',
+        'ol',
+        '|',
+        'link',
+        '|',
+        'align',
+        '|',
+        'outdent',
+        'indent',
+        '|',
+        'source',
+      ],
+      showXPathInStatusbar: false,
+      showCharsCounter: false,
+      showWordsCounter: false,
+    }),
+    [],
+  )
+
   useEffect(() => {
     if (open) {
       reset(defaultValues)
@@ -82,6 +130,7 @@ export default function PostFormDialog({ open, onClose, post }: Props) {
     setUploading(true)
 
     const reader = new FileReader()
+
     reader.onloadend = () => {
       setValue('coverImageBase64', reader.result as string, {
         shouldValidate: true,
@@ -92,7 +141,7 @@ export default function PostFormDialog({ open, onClose, post }: Props) {
     reader.readAsDataURL(file)
   }
 
-  const onSubmit: SubmitHandler<CreatePostDto> = async (data: FormValues) => {
+  const onSubmit: SubmitHandler<CreatePostDto> = async (data) => {
     try {
       if (isEdit && post) {
         await updateMutation.mutateAsync({
@@ -114,6 +163,7 @@ export default function PostFormDialog({ open, onClose, post }: Props) {
   }
 
   const coverImage = watch('coverImageBase64')
+
   const loading =
     isSubmitting || createMutation.isPending || updateMutation.isPending
 
@@ -126,6 +176,7 @@ export default function PostFormDialog({ open, onClose, post }: Props) {
 
         <div className="custom-scroll max-h-[80vh] overflow-y-auto px-6 py-6">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            {/* Title */}
             <FormField
               label="Title"
               required
@@ -134,16 +185,21 @@ export default function PostFormDialog({ open, onClose, post }: Props) {
               error={errors.title}
             />
 
+            {/* Content (Jodit Editor) */}
             <Controller
               control={control}
               name="content"
               render={({ field }) => (
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Content</label>
-                  <RichTextEditor
-                    value={field.value}
-                    onChange={field.onChange}
+
+                  <JoditEditor
+                    ref={editorRef}
+                    value={field.value || ''}
+                    config={editorConfig}
+                    onChange={(newContent) => field.onChange(newContent)}
                   />
+
                   {errors.content && (
                     <p className="text-sm text-red-400">
                       {errors.content.message}
@@ -153,6 +209,7 @@ export default function PostFormDialog({ open, onClose, post }: Props) {
               )}
             />
 
+            {/* Category */}
             <FormField
               label="Category"
               required
@@ -161,16 +218,19 @@ export default function PostFormDialog({ open, onClose, post }: Props) {
               error={errors.category}
             />
 
+            {/* Status */}
             <Controller
               control={control}
               name="status"
               render={({ field }) => (
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Status</label>
+
                   <Select value={field.value} onValueChange={field.onChange}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select status" />
                     </SelectTrigger>
+
                     <SelectContent>
                       <SelectItem value="DRAFT">Draft</SelectItem>
                       <SelectItem value="PUBLISHED">Published</SelectItem>
@@ -180,6 +240,7 @@ export default function PostFormDialog({ open, onClose, post }: Props) {
               )}
             />
 
+            {/* Cover Image */}
             <CoverImageUpload
               value={coverImage}
               uploading={uploading}
@@ -191,6 +252,7 @@ export default function PostFormDialog({ open, onClose, post }: Props) {
               }
             />
 
+            {/* Submit */}
             <Button type="submit" disabled={loading} className="w-full">
               {loading ? (
                 <Loader label="Saving..." />

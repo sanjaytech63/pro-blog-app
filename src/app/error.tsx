@@ -1,6 +1,5 @@
 'use client'
 
-import { useEffect } from 'react'
 import { Bug, RefreshCcw, Home } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
@@ -11,14 +10,10 @@ interface ErrorProps {
 }
 
 export default function GlobalError({ error, reset }: ErrorProps) {
-  useEffect(() => {
-    console.error('Global error:', error)
-  }, [error])
-
   return (
     <main className="bg-background text-foreground">
       <div className="relative flex min-h-screen items-center justify-center px-6">
-        <div className="from-destructive/10 to-primary/10 pointer-events-none absolute inset-0 bg-gradient-to-br via-transparent" />
+        <div className="from-destructive/10 to-primary/10 pointer-events-none absolute inset-0 bg-linear-to-br via-transparent" />
 
         <div className="relative z-10 mx-auto max-w-md text-center">
           <div className="bg-destructive/10 text-destructive mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full">

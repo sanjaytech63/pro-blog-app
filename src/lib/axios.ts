@@ -27,11 +27,17 @@ api.interceptors.response.use(
       original._retry = true
 
       try {
-        await api.post('/auth/refresh-token')
-        return api(original)
+        await api.post('/api/auth/refresh-token')
+        return api({
+          ...original,
+          headers: {
+            ...original.headers,
+          },
+          withCredentials: true,
+        })
       } catch {
         try {
-          await api.post('/auth/logout')
+          await api.post('/api/auth/logout')
         } catch {}
 
         return Promise.reject(error)
