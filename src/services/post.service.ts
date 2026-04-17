@@ -189,6 +189,34 @@ class PostService {
 
     return true
   }
+
+  async getCategoriesWithCount(status: 'PUBLISHED' | 'DRAFT' = 'PUBLISHED') {
+    return await Post.aggregate([
+      {
+        $match: {
+          isDeleted: false,
+          status,
+        },
+      },
+      {
+        $group: {
+          _id: {
+            $toLower: '$category',
+          },
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          name: '$_id',
+          slug: '$_id',
+          count: 1,
+        },
+      },
+      { $sort: { count: -1 } },
+    ])
+  }
 }
 
 export const postService = new PostService()

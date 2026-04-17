@@ -4,7 +4,7 @@ import { getPosts } from '@/services/server/post.api'
 
 export default async function RecentPosts() {
   const response = await getPosts({
-    limit: '4',
+    limit: '10',
     status: 'PUBLISHED',
   })
 
