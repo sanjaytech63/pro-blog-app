@@ -13,23 +13,17 @@ import { UpdateProfileDto } from '@/validators/user.schema'
 
 export const authService = {
   async login(data: LoginPayload): Promise<ApiResponse<AuthToken>> {
-    const res = await api.post<ApiResponse<AuthToken>>('/api/auth/login', data)
+    const res = await api.post<ApiResponse<AuthToken>>('/auth/login', data)
     return res.data
   },
 
   async register(data: RegisterPayload): Promise<ApiResponse<AuthUser>> {
-    const res = await api.post<ApiResponse<AuthUser>>(
-      '/api/auth/register',
-      data,
-    )
+    const res = await api.post<ApiResponse<AuthUser>>('/auth/register', data)
     return res.data
   },
 
   async forgot(data: ForgotPasswordPayload): Promise<ApiResponse<null>> {
-    const res = await api.post<ApiResponse<null>>(
-      '/api/auth/forgot-password',
-      data,
-    )
+    const res = await api.post<ApiResponse<null>>('/auth/forgot-password', data)
     return res.data
   },
 
@@ -38,7 +32,7 @@ export const authService = {
     data: ResetPasswordPayload,
   ): Promise<ApiResponse<null>> {
     const res = await api.post<ApiResponse<null>>(
-      `/api/auth/reset-password?token=${token}`,
+      `/auth/reset-password?token=${token}`,
       data,
     )
     return res.data
@@ -53,20 +47,18 @@ export const authService = {
   },
 
   async resendOtp(email: string): Promise<ApiResponse<null>> {
-    const res = await api.post<ApiResponse<null>>('/api/auth/send-otp', {
-      email,
-    })
+    const res = await api.post<ApiResponse<null>>('/auth/send-otp', { email })
     return res.data
   },
 
   async logout(): Promise<ApiResponse<null>> {
-    const res = await api.post<ApiResponse<null>>('/api/auth/logout')
+    const res = await api.post<ApiResponse<null>>('/auth/logout')
     return res.data
   },
 
   async updateProfile(data: UpdateProfileDto): Promise<ApiResponse<AuthUser>> {
     const res = await api.put<ApiResponse<AuthUser>>(
-      '/api/users/update-profile',
+      '/users/update-profile',
       data,
     )
     return res.data
@@ -74,7 +66,7 @@ export const authService = {
 
   async me(): Promise<AuthUser | null> {
     try {
-      const res = await api.get<ApiResponse<AuthUser>>('/api/users/me')
+      const res = await api.get<ApiResponse<AuthUser>>('/users/me')
       return res.data.data
     } catch {
       return null
@@ -82,20 +74,17 @@ export const authService = {
   },
 
   async updatePassword(data: UpdatePasswordDto): Promise<ApiResponse<null>> {
-    const res = await api.put<ApiResponse<null>>(
-      '/api/users/change-password',
-      data,
-    )
+    const res = await api.put<ApiResponse<null>>('/users/change-password', data)
     return res.data
   },
 
   async getAvatarUploadSignature() {
-    const res = await api.post<ApiResponse<AuthUser>>('/api/users/avatar/sign')
+    const res = await api.post<ApiResponse<AuthUser>>('/users/avatar/sign')
     return res.data.data
   },
 
   async updateAvatar(avatar: string) {
-    const res = await api.put<ApiResponse<AuthUser>>('/api/users/avatar', {
+    const res = await api.put<ApiResponse<AuthUser>>('/users/avatar', {
       avatar,
     })
     return res.data
