@@ -1,20 +1,11 @@
-'use client'
-
+import { Section } from '@/components/common/section'
+import Container from '@/components/container'
 import Image from 'next/image'
-import { Section } from '../common/section'
-import Container from '../container'
 
-interface BlogHeroProps {
-  title?: string
-  description?: string
-}
-
-export function BlogHero({
-  description = 'Deep technical articles on architecture, performance and production engineering.',
-}: BlogHeroProps) {
+export function ContactHero() {
   return (
     <Section
-      id="blog-list"
+      id="contact-page"
       className="relative mt-16 flex min-h-[50vh] items-center overflow-hidden"
     >
       <div className="absolute inset-0 -z-10">
@@ -32,15 +23,15 @@ export function BlogHero({
 
       <Container className="relative text-center text-white">
         <div className="mb-4 inline-block rounded-full border border-white/20 bg-white/10 px-4 py-1 text-xs backdrop-blur">
-          🚀 Engineering Blog
+          🚀 Contact Info
         </div>
 
         <h1 className="text-4xl leading-tight font-bold tracking-tight sm:text-6xl md:text-7xl">
-          Blog <span className="text-red-600">& </span> Insights
+          Contact Us
         </h1>
 
         <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-white/80 md:text-lg">
-          {description}
+          Have questions or feedback? We love to hear from you.
         </p>
       </Container>
     </Section>

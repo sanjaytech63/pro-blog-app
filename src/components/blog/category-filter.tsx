@@ -8,6 +8,7 @@ interface Category {
   id: string
   name: string
   slug: string
+  count: string
 }
 
 interface CategoryFilterProps {
@@ -31,6 +32,8 @@ export function CategoryFilter({ categories }: CategoryFilterProps) {
     router.push(`/blog?${params.toString()}`)
   }
 
+  console.log(categories, 'categories')
+
   return (
     <div className="flex flex-wrap gap-2">
       <Button
@@ -53,7 +56,15 @@ export function CategoryFilter({ categories }: CategoryFilterProps) {
           )}
           style={{ textTransform: 'capitalize' }}
         >
-          {category.name}
+          <span className="flex items-center gap-2">
+            <span className="capitalize">{category.name}</span>
+
+            {category.count !== undefined && (
+              <span className="bg-muted text-muted-foreground rounded-full px-2 py-0.5 text-xs">
+                {category.count}
+              </span>
+            )}
+          </span>
         </Button>
       ))}
     </div>

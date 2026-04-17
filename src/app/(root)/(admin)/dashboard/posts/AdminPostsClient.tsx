@@ -71,7 +71,7 @@ export default function AdminPostsClient({ searchParams }: Props) {
   // ✅ Data fetching
   const { data, isLoading } = usePosts({
     page,
-    limit: 5,
+    limit: 8,
     ...filters,
   })
 

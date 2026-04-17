@@ -1,4 +1,5 @@
 import { env } from '@/config/env'
+import { CategoryResponse } from '@/types/post'
 
 type GetPostsParams = {
   page?: string
@@ -8,6 +9,10 @@ type GetPostsParams = {
   category?: string
 }
 
+export interface GetCategoriesResponse {
+  categories: CategoryResponse[]
+}
+
 export async function getPosts(params?: GetPostsParams) {
   const query = new URLSearchParams(params as Record<string, string>).toString()
 
@@ -15,7 +20,7 @@ export async function getPosts(params?: GetPostsParams) {
     `${env.NEXT_PUBLIC_API_URL}/api/posts${query ? `?${query}` : ''}`,
     {
       next: {
-        revalidate: 60,
+        // revalidate: 60,
         tags: ['posts'],
       },
     },
@@ -34,8 +39,23 @@ export async function getPosts(params?: GetPostsParams) {
 export async function getPostBySlug(slug: string) {
   const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/posts/${slug}`, {
     next: {
+      // revalidate: 60,
+      tags: ['post', slug],
+    },
+  })
+
+  if (!res.ok) return null
+
+  const json = await res.json()
+
+  return json?.data ?? null
+}
+
+export async function getCategories(): Promise<GetCategoriesResponse | null> {
+  const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/categories`, {
+    next: {
       revalidate: 60,
-      // tags: ['post', slug],
+      tags: ['categories'],
     },
   })
 

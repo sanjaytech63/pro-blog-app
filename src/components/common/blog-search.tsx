@@ -1,24 +1,21 @@
 'use client'
 
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { Input } from '@/components/ui/input'
 import { Search } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useDebouncedValue } from '@/hooks/use-debounced-value'
 
 export function BlogSearch() {
   const router = useRouter()
-  const searchParams = useSearchParams()
 
-  const [value, setValue] = useState(searchParams.get('search') || '')
+  const [value, setValue] = useState('')
   const debounced = useDebouncedValue(value, 500)
 
+  const lastQueryRef = useRef<string>('')
+
   useEffect(() => {
-    const params = new URLSearchParams(
-      typeof window !== 'undefined'
-        ? window.location.search
-        : searchParams.toString(),
-    )
+    const params = new URLSearchParams(window.location.search)
 
     if (debounced) {
       params.set('search', debounced)
@@ -27,8 +24,13 @@ export function BlogSearch() {
     }
 
     const qs = params.toString()
-    router.push(`/blog${qs ? `?${qs}` : ''}`)
-  }, [debounced, router, searchParams])
+
+    if (lastQueryRef.current === qs) return
+
+    lastQueryRef.current = qs
+
+    router.replace(`/blog${qs ? `?${qs}` : ''}`)
+  }, [debounced, router])
 
   return (
     <div className="relative">

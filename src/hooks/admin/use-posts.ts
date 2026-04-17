@@ -1,5 +1,3 @@
-'use client'
-
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { CreatePostDTO, ListPostsQuery, UpdatePostDTO } from '@/types/post'
 import { toast } from 'sonner'

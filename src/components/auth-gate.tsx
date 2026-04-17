@@ -9,7 +9,7 @@ export function AuthGate({ children }: { children: ReactNode }) {
 
   return (
     <>
-      {isLoading && <FullPageLoader />}
+      {isLoading ? <FullPageLoader /> : null}
       {children}
     </>
   )

@@ -1,3 +1,5 @@
+'use client'
+
 import { Input } from '@/components/ui/input'
 import { FieldError } from 'react-hook-form'
 import { cn } from '@/lib/utils'

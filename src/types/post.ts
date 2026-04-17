@@ -87,3 +87,10 @@ export interface Category {
 export interface Props {
   categories: Category[]
 }
+
+export interface CategoryResponse {
+  id: string
+  name: string
+  slug: string
+  count: string
+}
