@@ -2,10 +2,10 @@ export const env = Object.freeze({
   /* ---------- App ---------- */
   NODE_ENV: process.env.NODE_ENV ?? 'development',
 
-  APP_URL: process.env.APP_URL || 'http://localhost:3000',
+  APP_URL: process.env.APP_URL || 'https://pro-blog-app.vercel.app',
 
   NEXT_PUBLIC_API_URL:
-    process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000',
+    process.env.NEXT_PUBLIC_API_URL || 'https://pro-blog-app.vercel.app',
 
   /* ---------- Database ---------- */
   MONGO_URI: process.env.MONGO_URI ?? '',
