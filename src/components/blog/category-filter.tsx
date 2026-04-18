@@ -60,9 +60,9 @@ export function CategoryFilter({ categories }: CategoryFilterProps) {
             <span className="capitalize">{category.name}</span>
 
             {category.count !== undefined && (
-              <span className="bg-muted text-muted-foreground rounded-full px-2 py-0.5 text-xs">
+              <p className="bg-muted text-muted-foreground flex h-5 w-5 items-center justify-center rounded-full text-xs">
                 {category.count}
-              </span>
+              </p>
             )}
           </span>
         </Button>

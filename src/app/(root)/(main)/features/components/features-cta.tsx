@@ -8,14 +8,14 @@ import { ArrowRight } from 'lucide-react'
 
 export function FeaturesCTA() {
   return (
-    <Section className="group relative overflow-hidden py-20">
+    <Section className="group relative overflow-hidden">
       <div className="from-primary/5 to-smoke-500/10 pointer-events-none absolute inset-0 bg-linear-to-r opacity-100 transition-opacity duration-300" />
-      <Container className="text-center text-white">
+      <Container className="text-center">
         <h2 className="text-3xl leading-tight font-bold sm:text-4xl md:text-5xl">
           Ready to start blogging?
         </h2>
 
-        <p className="mx-auto mt-4 max-w-xl text-base text-white/80 md:text-lg">
+        <p className="mx-auto mt-4 max-w-xl text-base md:text-lg">
           Join BlogMint and start publishing powerful content in minutes.
         </p>
 
@@ -42,7 +42,7 @@ export function FeaturesCTA() {
           </Button>
         </div>
 
-        <p className="mt-6 text-xs text-white/60">
+        <p className="mt-6 text-xs">
           No credit card required • Free plan available
         </p>
       </Container>

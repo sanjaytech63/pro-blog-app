@@ -1,6 +1,6 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import { useCallback } from 'react'
 
 import Container from '../container'
@@ -35,20 +35,25 @@ export default function BlogContentClient({
   meta,
 }: Props) {
   const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
 
   const handlePageChange = useCallback(
     (page: number) => {
-      const params = new URLSearchParams(window.location.search)
+      const params = new URLSearchParams(searchParams.toString())
 
       const current = params.get('page') || '1'
       if (current === String(page)) return
 
-      if (page > 1) params.set('page', String(page))
-      else params.delete('page')
+      if (page > 1) {
+        params.set('page', String(page))
+      } else {
+        params.delete('page')
+      }
 
-      router.replace(`/blog?${params.toString()}`)
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false })
     },
-    [router],
+    [router, pathname, searchParams],
   )
 
   const isEmpty = posts.length === 0
@@ -69,7 +74,7 @@ export default function BlogContentClient({
           {isEmpty ? <EmptyState /> : <PostGrid posts={posts} />}
         </div>
 
-        <aside className="sticky top-40 h-fit space-y-6 rounded-2xl border p-4">
+        <aside className="sticky top-25 h-fit space-y-6 rounded-2xl border p-4">
           <BlogSidebar categories={categories} recentPosts={recentPosts} />
         </aside>
       </div>
