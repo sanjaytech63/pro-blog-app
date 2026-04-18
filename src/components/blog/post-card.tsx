@@ -28,7 +28,7 @@ export function PostCard({ post }: PostCardProps) {
           </h3>
         </Link>
 
-        <div className="prose prose-neutral dark:prose-invert line-clamp-5 max-w-none">
+        <div className="prose prose-neutral dark:prose-invert line-clamp-5 max-w-none text-sm">
           <div dangerouslySetInnerHTML={{ __html: post.content }} />
         </div>
       </CardContent>

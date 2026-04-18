@@ -7,8 +7,6 @@ import { footerMenus, socialLinks } from './footer.constants'
 import { NewsletterForm } from './newsletter-form'
 
 export function Footer() {
-  const year = new Date().getFullYear()
-
   return (
     <footer className="bg-background border-t">
       <div className="mx-auto max-w-7xl px-4 py-6">
@@ -95,7 +93,7 @@ export function Footer() {
 
         {/* Bottom */}
         <div className="text-muted-foreground mt-10 flex flex-col items-center gap-4 border-t pt-6 text-center text-sm md:flex-row md:justify-between md:text-left">
-          <p>© {year} BlogMint. All rights reserved.</p>
+          <p>© 2026 BlogMint. All rights reserved.</p>
 
           <div className="flex flex-wrap justify-center gap-6 md:justify-start">
             <Link

@@ -1,31 +1,34 @@
 'use client'
 
 import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Send } from 'lucide-react'
 import { useState } from 'react'
-import { ContactFormValues, contactSchema } from '@/validators/contact.schema'
+import { Send } from 'lucide-react'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { Section } from '@/components/common/section'
+import { Textarea } from '@/components/ui/textarea'
+
+type FormValues = {
+  name: string
+  email: string
+  subject: string
+  message: string
+}
 
 export function ContactForm() {
+  const { register, handleSubmit, reset } = useForm<FormValues>()
   const [loading, setLoading] = useState(false)
-  const [success, setSuccess] = useState(false)
 
-  const form = useForm<ContactFormValues>({
-    resolver: zodResolver(contactSchema),
-  })
-
-  const onSubmit = async (data: ContactFormValues) => {
+  const onSubmit = async (data: FormValues) => {
     setLoading(true)
-    setSuccess(false)
 
     try {
-      await new Promise((res) => setTimeout(res, 1000))
+      await fetch('/api/contact', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      })
 
-      setSuccess(true)
-      form.reset()
+      reset()
     } catch (err) {
       console.error(err)
     } finally {
@@ -34,54 +37,53 @@ export function ContactForm() {
   }
 
   return (
-    <div className="rounded-2xl border p-6 shadow-sm">
-      <h2 className="mb-6 text-xl font-semibold">Send a Message</h2>
+    <Section className="relative overflow-hidden">
+      <div className="from-primary/10 to-smoke-500/10 pointer-events-none absolute inset-0 bg-linear-to-r transition-opacity duration-300" />
 
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        {/* NAME */}
-        <div>
-          <Input placeholder="Your Name" {...form.register('name')} />
-          <p className="text-destructive mt-1 text-xs">
-            {form.formState.errors.name?.message}
+      <div className="relative p-6 md:p-8">
+        <div className="mb-6">
+          <h2 className="text-xl font-semibold md:text-2xl">
+            Lets <span className="text-indigo-500">Talk</span>
+          </h2>
+
+          <p className="mt-1 text-xs text-gray-500 md:text-sm">
+            Questions, feedback, or issues? We’re here to help.
           </p>
         </div>
 
-        {/* EMAIL */}
-        <div>
-          <Input placeholder="Your Email" {...form.register('email')} />
-          <p className="text-destructive mt-1 text-xs">
-            {form.formState.errors.email?.message}
-          </p>
-        </div>
+        {/* FORM */}
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          {/* ROW 1 */}
+          <div className="grid gap-3 md:grid-cols-2">
+            <Input placeholder="Your Name" {...register('name')} />
 
-        {/* MESSAGE */}
-        <div>
+            <Input
+              type="email"
+              placeholder="Your Email"
+              {...register('email')}
+            />
+          </div>
+
+          <Input placeholder="Subject" {...register('subject')} />
+
           <Textarea
-            placeholder="Your Message"
-            rows={5}
-            {...form.register('message')}
+            placeholder="Write your message..."
+            {...register('message')}
+            rows={10}
           />
-          <p className="text-destructive mt-1 text-xs">
-            {form.formState.errors.message?.message}
-          </p>
-        </div>
 
-        {/* BUTTON */}
-        <Button
-          type="submit"
-          className="flex w-full items-center gap-2"
-          disabled={loading}
-        >
-          {loading ? 'Sending...' : 'Send Message'}
-          <Send className="h-4 w-4" />
-        </Button>
-
-        {success && (
-          <p className="mt-2 text-sm text-green-500">
-            Message sent successfully!
-          </p>
-        )}
-      </form>
-    </div>
+          <div className="flex justify-end pt-2">
+            <Button
+              type="submit"
+              disabled={loading}
+              className="flex h-10 items-center gap-2 px-5 text-sm"
+            >
+              {loading ? 'Sending...' : 'Send'}
+              <Send size={14} />
+            </Button>
+          </div>
+        </form>
+      </div>
+    </Section>
   )
 }

@@ -8,11 +8,12 @@ export default function ContactPage() {
   return (
     <>
       <ContactHero />
-
       <Section id="contact-page">
-        <Container className="grid gap-10 lg:grid-cols-2">
-          <ContactForm />
-          <ContactInfo />
+        <Container>
+          <div className="grid overflow-hidden rounded-2xl border lg:grid-cols-2">
+            <ContactInfo />
+            <ContactForm />
+          </div>
         </Container>
       </Section>
     </>

@@ -32,7 +32,7 @@ export function BlogHero({ post }: Props) {
         <BlogActions />
       </div>
 
-      <h1 className="mb-6 text-3xl leading-tight font-bold capitalize md:text-5xl">
+      <h1 className="mb-6 text-xl leading-tight font-bold capitalize md:text-2xl">
         {post.title}
       </h1>
 

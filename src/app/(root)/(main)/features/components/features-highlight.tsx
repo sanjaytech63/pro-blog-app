@@ -15,7 +15,7 @@ const highlights = [
       'Live preview',
       'Media & code blocks',
     ],
-    image: '/images/feature1.png',
+    image: '/images/feature2.png',
   },
   {
     title: 'Manage Everything in One Dashboard',
@@ -25,7 +25,7 @@ const highlights = [
       'User roles & permissions',
       'Analytics overview',
     ],
-    image: '/images/feature2.png',
+    image: '/images/feature1.png',
   },
 ]
 
