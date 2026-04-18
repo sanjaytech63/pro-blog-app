@@ -7,7 +7,7 @@ import {
 
 export const newsletterService = {
   async subscribe(data: SubscribePayload): Promise<NewsletterResponse> {
-    const res = await api.post('/newsletter', data)
+    const res = await api.post('/api/newsletter', data)
     return res.data
   },
 
@@ -17,7 +17,7 @@ export const newsletterService = {
     search?: string
   }): Promise<NewsletterListResponse> {
     const res = await api.get<{ data: NewsletterListResponse }>(
-      '/newsletter/admin',
+      '/api/newsletter/admin',
       { params },
     )
 
@@ -25,12 +25,12 @@ export const newsletterService = {
   },
 
   async deleteSubscriber(id: string): Promise<NewsletterResponse> {
-    const res = await api.delete(`/newsletter/admin/${id}`)
+    const res = await api.delete(`/api/newsletter/admin/${id}`)
     return res.data
   },
 
   async unsubscribe(email: string): Promise<NewsletterResponse> {
-    const res = await api.patch('/newsletter/unsubscribe', { email })
+    const res = await api.patch('/api/newsletter/unsubscribe', { email })
     return res.data
   },
 }

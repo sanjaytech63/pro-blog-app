@@ -1,4 +1,10 @@
-import { LayoutDashboard, Newspaper, Settings, Users } from 'lucide-react'
+import {
+  FileText,
+  LayoutDashboard,
+  Newspaper,
+  Settings,
+  Users,
+} from 'lucide-react'
 
 export const dashboardNav = [
   {
@@ -10,6 +16,11 @@ export const dashboardNav = [
     title: 'Users',
     href: '/dashboard/users',
     icon: Users,
+  },
+  {
+    title: 'Posts',
+    href: '/dashboard/posts',
+    icon: FileText,
   },
   {
     title: 'Newsletter',

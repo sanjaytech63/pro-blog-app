@@ -1,7 +1,9 @@
 import axios from 'axios'
 
+// Use relative URLs by default (same domain in prod)
+// Only use absolute URL if environment variable explicitly set for a different domain
 export const api = axios.create({
-  baseURL: '/api',
+  baseURL: '/',
   withCredentials: true,
   timeout: 15000,
 })
@@ -25,11 +27,17 @@ api.interceptors.response.use(
       original._retry = true
 
       try {
-        await api.post('/auth/refresh-token')
-        return api(original)
+        await api.post('/api/auth/refresh-token')
+        return api({
+          ...original,
+          headers: {
+            ...original.headers,
+          },
+          withCredentials: true,
+        })
       } catch {
         try {
-          await api.post('/auth/logout')
+          await api.post('/api/auth/logout')
         } catch {}
 
         return Promise.reject(error)

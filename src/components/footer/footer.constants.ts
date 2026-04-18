@@ -1,20 +1,22 @@
-import { Github, Twitter, Linkedin } from 'lucide-react'
+import { Github, Twitter, Linkedin, Instagram } from 'lucide-react'
 
 export const footerMenus = [
   {
-    title: 'Product',
+    title: 'Categories',
     links: [
-      { name: 'Features', href: '/features' },
-      { name: 'Pricing', href: '/pricing' },
-      { name: 'Blog', href: '/blog' },
+      { name: 'Web Development', href: '/blog?category=web-dev' },
+      { name: 'React', href: '/blog?category=react' },
+      { name: 'Next.js', href: '/blog?category=nextjs' },
+      { name: 'Backend', href: '/blog?category=backend' },
     ],
   },
   {
-    title: 'Company',
+    title: 'Resources',
     links: [
-      { name: 'About', href: '/about' },
-      { name: 'Careers', href: '/careers' },
-      { name: 'Contact', href: '/contact' },
+      { name: 'All Articles', href: '/blog' },
+      { name: 'Popular Posts', href: '/blog?sort=popular' },
+      { name: 'Latest Posts', href: '/blog?sort=latest' },
+      { name: 'Guides', href: '/blog?tag=guide' },
     ],
   },
 ]
@@ -34,5 +36,10 @@ export const socialLinks = [
     name: 'LinkedIn',
     href: 'https://linkedin.com',
     icon: Linkedin,
+  },
+  {
+    name: 'Instagram',
+    icon: Instagram,
+    href: 'https://instagram.com',
   },
 ]

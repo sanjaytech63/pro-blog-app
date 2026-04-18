@@ -1,4 +1,4 @@
-import { Home, Sparkles, CreditCard } from 'lucide-react'
+import { Home, Sparkles } from 'lucide-react'
 
 export const navItems = [
   {
@@ -7,13 +7,18 @@ export const navItems = [
     icon: Home,
   },
   {
+    name: 'Blog',
+    href: '/blog',
+    icon: Sparkles,
+  },
+  {
     name: 'Features',
     href: '/features',
     icon: Sparkles,
   },
   {
-    name: 'Pricing',
-    href: '/pricing',
-    icon: CreditCard,
+    name: 'Contact Us',
+    href: '/contact',
+    icon: Sparkles,
   },
 ]

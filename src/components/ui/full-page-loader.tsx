@@ -1,14 +1,13 @@
 'use client'
 
-import { Loader } from 'lucide-react'
-
 export const FullPageLoader = () => (
-  <div className="flex min-h-screen items-center justify-center bg-white text-gray-900 dark:bg-black dark:text-white">
-    <div className="flex items-center gap-3">
-      <Loader className="text-primary dark:text-primary h-5 w-5 animate-spin" />
-      <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
-        Loading…
-      </span>
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-lg">
+    <div className="flex flex-col items-center gap-4">
+      <div className="flex w-full flex-col items-center justify-center gap-4">
+        <div className="flex h-20 w-20 animate-spin items-center justify-center rounded-full border-4 border-transparent border-t-indigo-600 text-4xl text-indigo-600">
+          <div className="flex h-16 w-16 animate-spin items-center justify-center rounded-full border-4 border-transparent border-t-red-600 text-2xl text-red-600"></div>
+        </div>
+      </div>
     </div>
   </div>
 )

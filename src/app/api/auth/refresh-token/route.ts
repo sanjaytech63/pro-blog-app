@@ -5,9 +5,13 @@ import ApiError from '@/utils/ApiError'
 import { ApiResponse } from '@/utils/ApiResponse'
 import { catchAsync } from '@/utils/catchAsync'
 
-export const POST = catchAsync(async (req) => {
+import { cookies } from 'next/headers'
+
+export const POST = catchAsync(async () => {
   await connectDB()
-  const refreshToken = req.cookies.get('refresh_token')?.value
+
+  const cookieStore = await cookies()
+  const refreshToken = cookieStore.get('refresh_token')?.value
 
   if (!refreshToken) throw new ApiError(401, 'Refresh token missing')
 
