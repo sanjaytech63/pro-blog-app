@@ -17,6 +17,9 @@ const PUBLIC_ROUTES = [
   '/verify-otp',
   '/reset-password',
   '/forgot-password',
+  '/blog',
+  '/contact',
+  '/features',
 ]
 
 /**
