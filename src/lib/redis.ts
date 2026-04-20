@@ -1,42 +1,16 @@
-import { env } from '@/config/env'
+// import { env } from '@/config/env'
 import Redis from 'ioredis'
 
 declare global {
   var _redis: Redis | undefined
 }
 
-const createRedisClient = () => {
-  const client = new Redis(env.REDIS_URL, {
-    lazyConnect: true,
-    maxRetriesPerRequest: 2,
-    connectTimeout: 10000,
+const client = new Redis(
+  'rediss://default:gQAAAAAAAZJLAAIocDE3MmM1M2E5NDliZGU0MzFmOTI2ZjZmZDMzM2JiODRkZnAxMTAyOTg3@above-pelican-102987.upstash.io:6379',
+)
+await client.set('foo', 'bar')
 
-    retryStrategy(times) {
-      if (times > 3) return null
-      return Math.min(times * 200, 2000)
-    },
-  })
-
-  client.on('connect', () => {
-    console.log('🟡 Redis connecting...')
-  })
-
-  client.on('ready', () => {
-    console.log('🟢 Redis ready (connected)')
-  })
-
-  client.on('error', (err) => {
-    console.error('🔴 Redis error:', err.message)
-  })
-
-  client.on('end', () => {
-    console.log('⚫ Redis connection closed')
-  })
-
-  return client
-}
-
-export const redis = global._redis ?? (global._redis = createRedisClient())
+export const redis = global._redis ?? (global._redis = client)
 
 export async function ensureRedisConnection() {
   if (redis.status === 'ready') return
