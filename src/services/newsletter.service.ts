@@ -1,3 +1,4 @@
+import { cache } from '@/lib/cache'
 import { Newsletter } from '@/models/newsletter.model'
 import ApiError from '@/utils/ApiError'
 interface ListUsersQuery {
@@ -72,6 +73,11 @@ class NewsletterService {
     limit: number
     search?: string
   }) {
+    const cacheKey = `newsletter:newsletter-get-admin}`
+
+    const cached = await cache.get(cacheKey)
+    if (cached) return cached
+
     if (page < 1 || limit < 1) {
       throw new ApiError(400, 'Invalid pagination parameters')
     }
@@ -93,7 +99,7 @@ class NewsletterService {
       Newsletter.countDocuments(filter),
     ])
 
-    return {
+    const result = {
       data,
       meta: {
         total,
@@ -101,6 +107,10 @@ class NewsletterService {
         limit,
       },
     }
+
+    await cache.set(cacheKey, result, 60)
+
+    return result
   }
 
   /* ---------- ADMIN: DELETE ---------- */

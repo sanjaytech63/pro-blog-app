@@ -13,23 +13,15 @@ export type RefreshTokenPayload = {
 
 /* ---------- Sign Tokens ---------- */
 export const signAccessToken = (payload: AccessTokenPayload): string => {
-  const secret = env.JWT_ACCESS_SECRET as Secret
-
-  const options: SignOptions = {
-    expiresIn: Number(env.ACCESS_TOKEN_EXPIRES) || '15m',
-  }
-
-  return jwt.sign(payload, secret, options)
+  return jwt.sign(payload, env.JWT_ACCESS_SECRET as Secret, {
+    expiresIn: env.ACCESS_TOKEN_EXPIRES as SignOptions['expiresIn'],
+  })
 }
 
 export const signRefreshToken = (payload: RefreshTokenPayload): string => {
-  const secret = env.JWT_REFRESH_SECRET as Secret
-
-  const options: SignOptions = {
-    expiresIn: Number(env.REFRESH_TOKEN_EXPIRES) || '30d',
-  }
-
-  return jwt.sign(payload, secret, options)
+  return jwt.sign(payload, env.JWT_REFRESH_SECRET as Secret, {
+    expiresIn: env.REFRESH_TOKEN_EXPIRES as SignOptions['expiresIn'],
+  })
 }
 
 /* ---------- Verify Tokens ---------- */

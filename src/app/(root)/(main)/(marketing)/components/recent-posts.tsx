@@ -10,7 +10,7 @@ export default async function RecentPosts() {
 
   const list = response?.data ?? []
 
-  if (list.length === 0) {
+  if (list.length === 0 && !list) {
     return <EmptyState title="No recent posts found" />
   }
 

@@ -5,7 +5,7 @@ export const env = Object.freeze({
   APP_URL: process.env.APP_URL || 'https://pro-blog-app.vercel.app',
 
   NEXT_PUBLIC_API_URL:
-    process.env.NEXT_PUBLIC_API_URL || 'https://pro-blog-app.vercel.app',
+    process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000',
 
   /* ---------- Database ---------- */
   MONGO_URI: process.env.MONGO_URI ?? '',
@@ -17,12 +17,12 @@ export const env = Object.freeze({
   SMTP_PASSWORD: process.env.SMTP_PASSWORD ?? '',
 
   /* ---------- JWT (ACCESS) ---------- */
-  JWT_ACCESS_SECRET: process.env.JWT_ACCESS_SECRET ?? '',
-  ACCESS_TOKEN_EXPIRES: process.env.ACCESS_TOKEN_EXPIRES ?? '15m',
+  JWT_ACCESS_SECRET: process.env.JWT_ACCESS_SECRET || '',
+  ACCESS_TOKEN_EXPIRES: process.env.ACCESS_TOKEN_EXPIRES || '15m',
 
   /* ---------- JWT (REFRESH) ---------- */
-  JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET ?? '',
-  REFRESH_TOKEN_EXPIRES: process.env.REFRESH_TOKEN_EXPIRES ?? '30d',
+  JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET || '',
+  REFRESH_TOKEN_EXPIRES: process.env.REFRESH_TOKEN_EXPIRES || '30d',
 
   /* ---------- OTP ---------- */
   OTP_EXPIRES_MINUTES: Number(process.env.OTP_EXPIRES_MINUTES ?? 5),
@@ -35,4 +35,6 @@ export const env = Object.freeze({
   CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME ?? '',
   CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY ?? '',
   CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET ?? '',
+
+  REDIS_URL: process.env.REDIS_URL ?? '',
 })

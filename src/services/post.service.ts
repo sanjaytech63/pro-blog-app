@@ -4,6 +4,7 @@ import slugify from 'slugify'
 import cloudinary from '@/lib/cloudinary'
 import { CreatePostDto, UpdatePostDto } from '@/validators/post.schema'
 import mongoose from 'mongoose'
+import { cache } from '@/lib/cache'
 
 interface ListPostsQuery {
   page?: number
@@ -65,6 +66,11 @@ class PostService {
       includeDeleted = false,
     } = query
 
+    const cacheKey = `posts:list:${JSON.stringify(query)}`
+
+    const cached = await cache.get<typeof result>(cacheKey)
+    if (cached) return cached
+
     const filter: MongoFilter = {}
 
     if (!includeDeleted) filter.isDeleted = false
@@ -88,7 +94,7 @@ class PostService {
       Post.countDocuments(filter),
     ])
 
-    return {
+    const result = {
       data,
       meta: {
         page,
@@ -97,9 +103,18 @@ class PostService {
         totalPages: Math.ceil(total / limit),
       },
     }
+
+    await cache.set(cacheKey, result, 60)
+
+    return result
   }
 
   async getBySlug(slug: string) {
+    const cacheKey = `post:slug:${slug}`
+
+    const cached = await cache.get(cacheKey)
+    if (cached) return cached
+
     const post = await Post.findOne({
       slug,
       isDeleted: false,
@@ -110,7 +125,17 @@ class PostService {
 
     if (!post) throw new ApiError(404, 'Post not found')
 
-    return post
+    const result = {
+      ...post,
+      author: {
+        fullName: post.author?.fullName ?? 'Unknown Author',
+        avatar: post.author?.avatar ?? '/images/default-avatar.png',
+      },
+    }
+
+    await cache.set(cacheKey, result, 300)
+
+    return result
   }
 
   async getById(postId: string) {

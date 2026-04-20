@@ -18,19 +18,10 @@ export async function getPosts(params?: GetPostsParams) {
 
   const res = await fetch(
     `${env.NEXT_PUBLIC_API_URL}/api/posts${query ? `?${query}` : ''}`,
-    {
-      next: {
-        // revalidate: 60,
-        tags: ['posts'],
-      },
-    },
+    { cache: 'no-store' },
   )
 
-  if (!res.ok) {
-    console.error('Failed to fetch posts')
-    return null
-  }
-
+  if (!res.ok) return null
   const json = await res.json()
 
   return json?.data ?? null
@@ -38,10 +29,7 @@ export async function getPosts(params?: GetPostsParams) {
 
 export async function getPostBySlug(slug: string) {
   const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/posts/${slug}`, {
-    next: {
-      // revalidate: 60,
-      tags: ['post', slug],
-    },
+    cache: 'no-store',
   })
 
   if (!res.ok) return null
@@ -53,10 +41,7 @@ export async function getPostBySlug(slug: string) {
 
 export async function getCategories(): Promise<GetCategoriesResponse | null> {
   const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/categories`, {
-    next: {
-      revalidate: 60,
-      tags: ['categories'],
-    },
+    cache: 'no-store',
   })
 
   if (!res.ok) return null
