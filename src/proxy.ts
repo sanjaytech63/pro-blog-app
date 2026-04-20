@@ -67,7 +67,8 @@ export function proxy(request: NextRequest) {
     }
   }
 
-  const isPublicRoute = PUBLIC_ROUTES.includes(pathname)
+  const isPublicRoute =
+    PUBLIC_ROUTES.includes(pathname) || pathname.startsWith('/blog')
   const isAdminRoute = pathname.startsWith(ADMIN_PREFIX)
 
   // =============================

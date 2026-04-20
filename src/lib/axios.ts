@@ -20,14 +20,14 @@ api.interceptors.response.use(
       url.includes('/auth/login') ||
       url.includes('/auth/register') ||
       url.includes('/auth/refresh-token') ||
-      url.includes('/auth/logout') ||
-      url.includes('/users/me')
+      url.includes('/auth/logout')
 
     if (status === 401 && !original._retry && !skipRefresh) {
       original._retry = true
 
       try {
         await api.post('/api/auth/refresh-token')
+        await new Promise((resolve) => setTimeout(resolve, 100))
         return api({
           ...original,
           headers: {

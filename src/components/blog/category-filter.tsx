@@ -32,8 +32,6 @@ export function CategoryFilter({ categories }: CategoryFilterProps) {
     router.push(`/blog?${params.toString()}`)
   }
 
-  console.log(categories, 'categories')
-
   return (
     <div className="flex flex-wrap gap-2">
       <Button

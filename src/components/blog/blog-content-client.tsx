@@ -56,7 +56,7 @@ export default function BlogContentClient({
     [router, pathname, searchParams],
   )
 
-  const isEmpty = posts.length === 0
+  const isEmpty = posts.length === 0 && !posts
 
   return (
     <Container className="flex h-full flex-col pt-10">
