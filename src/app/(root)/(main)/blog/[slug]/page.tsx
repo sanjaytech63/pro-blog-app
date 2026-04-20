@@ -8,6 +8,7 @@ import { BlogComments } from '../component/blog-comments'
 import { getPostBySlug } from '@/services/server/post.api'
 import { EmptyState } from '@/components/common/empty-state'
 import { SinglePostContent } from '../component/single-post-content'
+import { capitalize } from '@/utils/capitalize'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -20,7 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!post) return {}
 
   return {
-    title: post.title,
+    title: capitalize(post.title),
     description: post.content.slice(0, 160),
   }
 }
@@ -47,11 +48,11 @@ export default async function BlogDetailsPage({ params }: Props) {
             <SinglePostContent post={post} />
             <BlogAuthor
               author={{
-                fullName: post.author.fullName,
+                fullName: post.author.fullName || '',
                 avatar: post.author.avatar || '/images/default-avatar.png',
               }}
             />
-            <BlogComments />
+            <BlogComments postId={post._id} />
           </main>
         </Container>
       </Section>

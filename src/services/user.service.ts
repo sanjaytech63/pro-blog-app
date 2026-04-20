@@ -1,3 +1,4 @@
+import { cache } from '@/lib/cache'
 import { User } from '@/models/user.model'
 import ApiError from '@/utils/ApiError'
 import { UpdatePasswordDto } from '@/validators/auth.schema'
@@ -15,11 +16,18 @@ interface ListUsersQuery {
 
 class UserService {
   async getProfile(userId: string) {
+    const cacheKey = `user:profile:${userId}`
+
+    const cached = await cache.get(cacheKey)
+    if (cached) return cached
+
     const user = await User.findOne({ _id: userId, isDeleted: false }).select(
       '-password',
     )
 
     if (!user) throw new ApiError(404, 'User not found')
+    await cache.set(cacheKey, user, 300)
+
     return user
   }
 
@@ -74,6 +82,11 @@ class UserService {
   }
 
   async list(query: ListUsersQuery) {
+    const cacheKey = `users:user-list:${JSON.stringify(query)}`
+
+    const cached = await cache.get(cacheKey)
+    if (cached) return cached
+
     const { page = 1, limit = 20, search, includeDeleted = false } = query
 
     const filter: ListUsersQuery = {}
@@ -96,7 +109,7 @@ class UserService {
       User.countDocuments(filter),
     ])
 
-    return {
+    const result = {
       data,
       meta: {
         page,
@@ -105,14 +118,25 @@ class UserService {
         totalPages: Math.ceil(total / limit),
       },
     }
+
+    await cache.set(cacheKey, result, 60)
+
+    return result
   }
 
   async getById(userId: string) {
+    const cacheKey = `user:id:${userId}`
+
+    const cached = await cache.get(cacheKey)
+    if (cached) return cached
+
     const user = await User.findById(userId).select('-password')
 
     if (!user) {
       throw new ApiError(404, 'User not found')
     }
+
+    await cache.set(cacheKey, user, 300)
 
     return user
   }

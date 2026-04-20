@@ -12,6 +12,8 @@ interface Props {
 export function BlogHero({ post }: Props) {
   const stats = readingTime(post.content || '')
 
+  console.log(post, 'post')
+
   return (
     <div className="mb-12">
       <div className="mb-6 flex items-center justify-between">
@@ -23,13 +25,15 @@ export function BlogHero({ post }: Props) {
           </Avatar>
 
           <div>
-            <p className="text-sm font-semibold">{post.author.fullName}</p>
+            <p className="text-sm font-semibold">
+              {post.author.fullName || ''}
+            </p>
             <p className="text-muted-foreground text-xs">
               {dayjs(post.createdAt).format('MMM D, YYYY')} • {stats.text}
             </p>
           </div>
         </div>
-        <BlogActions />
+        <BlogActions post={post} />
       </div>
 
       <h1 className="mb-6 text-xl leading-tight font-bold capitalize md:text-2xl">

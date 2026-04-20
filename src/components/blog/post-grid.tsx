@@ -8,9 +8,7 @@ interface PostGridProps {
 export function PostGrid({ posts = [] }: PostGridProps) {
   return (
     <div className="grid gap-8 capitalize sm:grid-cols-2 lg:grid-cols-4">
-      {posts?.map((post) => (
-        <PostCard key={post._id} post={post} />
-      ))}
+      {posts && posts?.map((post) => <PostCard key={post._id} post={post} />)}
     </div>
   )
 }
