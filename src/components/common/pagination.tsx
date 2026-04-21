@@ -26,51 +26,54 @@ export function Pagination({
   onPageChange,
   siblingCount = 1,
 }: Props) {
-  const totalPages = Math.ceil(total / limit)
+  const safePage = Number.isFinite(page) && page > 0 ? page : 1
+  const safeLimit = Number.isFinite(limit) && limit > 0 ? limit : 10
+  const safeTotal = Number.isFinite(total) && total >= 0 ? total : 0
+
+  const totalPages = Math.max(1, Math.ceil(safeTotal / safeLimit))
 
   const pages = getPaginationRange({
-    page,
+    page: safePage,
     totalPages,
     siblingCount,
-  })
+  }).filter((p) => p === 'dots' || Number.isFinite(p))
 
   return (
     <UIPagination>
       <PaginationContent>
-        {/* Previous */}
         <PaginationItem>
           <PaginationPrevious
-            onClick={() => onPageChange(Math.max(page - 1, 1))}
-            aria-disabled={page === 1}
-            className={page === 1 ? 'pointer-events-none opacity-50' : ''}
+            onClick={() => onPageChange(Math?.max(safePage - 1, 1))}
+            aria-disabled={safePage === 1}
+            className={safePage === 1 ? 'pointer-events-none opacity-50' : ''}
           />
         </PaginationItem>
 
-        {/* Page Numbers */}
-        {pages.map((p, index) =>
-          p === 'dots' ? (
-            <PaginationItem key={`dots-${index}`}>
-              <PaginationEllipsis />
-            </PaginationItem>
-          ) : (
-            <PaginationItem key={p}>
-              <PaginationLink
-                isActive={p === page}
-                onClick={() => onPageChange(p)}
-              >
-                {p}
-              </PaginationLink>
-            </PaginationItem>
-          ),
-        )}
+        {/* Pages */}
+        {pages &&
+          pages?.map((p, index) =>
+            p === 'dots' ? (
+              <PaginationItem key={`dots-${index}`}>
+                <PaginationEllipsis />
+              </PaginationItem>
+            ) : (
+              <PaginationItem key={p}>
+                <PaginationLink
+                  isActive={p === safePage}
+                  onClick={() => onPageChange(p)}
+                >
+                  {p}
+                </PaginationLink>
+              </PaginationItem>
+            ),
+          )}
 
-        {/* Next */}
         <PaginationItem>
           <PaginationNext
-            onClick={() => onPageChange(Math.min(page + 1, totalPages))}
-            aria-disabled={page === totalPages}
+            onClick={() => onPageChange(Math?.min(safePage + 1, totalPages))}
+            aria-disabled={safePage === totalPages}
             className={
-              page === totalPages ? 'pointer-events-none opacity-50' : ''
+              safePage === totalPages ? 'pointer-events-none opacity-50' : ''
             }
           />
         </PaginationItem>

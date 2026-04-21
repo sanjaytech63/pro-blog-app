@@ -27,7 +27,7 @@ api.interceptors.response.use(
 
       try {
         await api.post('/api/auth/refresh-token')
-        await new Promise((resolve) => setTimeout(resolve, 100))
+        await new Promise((resolve) => setTimeout(resolve, 200))
         return api({
           ...original,
           headers: {

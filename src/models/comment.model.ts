@@ -1,31 +1,32 @@
-import mongoose, { Schema, models } from 'mongoose'
+import mongoose, { Schema, Types } from 'mongoose'
 
 const commentSchema = new Schema(
   {
-    content: { type: String, required: true },
-
     post: {
-      type: Schema.Types.ObjectId,
+      type: Types.ObjectId,
       ref: 'Post',
       required: true,
+      index: true,
     },
-
     user: {
-      type: Schema.Types.ObjectId,
+      type: Types.ObjectId,
       ref: 'User',
       required: true,
     },
-
+    content: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     parent: {
-      type: Schema.Types.ObjectId,
+      type: Types.ObjectId,
       ref: 'Comment',
       default: null,
+      index: true,
     },
   },
   { timestamps: true },
 )
 
-commentSchema.index({ post: 1, createdAt: -1 })
-
 export const Comment =
-  models.Comment || mongoose.model('Comment', commentSchema)
+  mongoose.models.Comment || mongoose.model('Comment', commentSchema)

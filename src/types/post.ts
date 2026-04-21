@@ -75,6 +75,7 @@ export interface Post {
   commentsCount: number
   status: 'DRAFT' | 'PUBLISHED'
   createdAt: string
+  isLiked: boolean
   updatedAt: string
 }
 

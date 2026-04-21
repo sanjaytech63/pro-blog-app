@@ -9,4 +9,6 @@ export interface CommentEntity {
   createdAt: string
   user: CommentUser
   parent?: string | null
+  isOwner: boolean
+  children?: CommentEntity[]
 }

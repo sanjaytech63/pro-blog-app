@@ -50,8 +50,6 @@ export default function PostFilters({ onChange }: Props) {
     setCategory('')
   }
 
-  console.log(filters, 'filters in post-filter')
-
   return (
     <div className="flex flex-col gap-3 md:flex-row md:flex-wrap md:items-center">
       <div className="relative w-full md:w-64">
