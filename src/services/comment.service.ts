@@ -40,11 +40,6 @@ class CommentService {
   }
 
   async list(postId: string, userId?: string) {
-    // const cacheKey = `comments:post:${postId}`
-
-    // const cached: string | null = await cache.get(cacheKey)
-    // if (cached) return JSON.parse(cached)
-
     const comments = await Comment.find({ post: postId })
       .populate('user', 'fullName avatar')
       .sort({ createdAt: 1 })
