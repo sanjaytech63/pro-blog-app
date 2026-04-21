@@ -13,18 +13,18 @@ export interface PostEntity {
 
 interface LikeResponse {
   liked: boolean
+  likesCount: number
 }
 
 export const useLike = (postId: string) => {
   const qc = useQueryClient()
 
-  return useMutation<LikeResponse, Error, void, { prev?: PostEntity }>({
+  return useMutation<LikeResponse>({
     mutationFn: async () => {
       const res = await api.post(`/api/likes/${postId}`)
       return res.data.data
     },
 
-    /* ------------------ OPTIMISTIC UPDATE ------------------ */
     onMutate: async () => {
       await qc.cancelQueries({ queryKey: ['post', postId] })
 
@@ -33,36 +33,30 @@ export const useLike = (postId: string) => {
       if (prev) {
         const isLiked = prev.isLiked
 
-        qc.setQueryData<PostEntity>(['post', postId], {
+        qc.setQueryData(['post', postId], {
           ...prev,
           isLiked: !isLiked,
-          likesCount: isLiked ? prev.likesCount - 1 : prev.likesCount + 1,
+          likesCount: isLiked
+            ? Math.max(prev.likesCount - 1, 0)
+            : prev.likesCount + 1,
         })
       }
 
       return { prev }
     },
 
-    /* ------------------ ROLLBACK ------------------ */
-    onError: (_err, _vars, ctx) => {
-      if (ctx?.prev) {
-        qc.setQueryData(['post', postId], ctx.prev)
-      }
-    },
-
-    /* ------------------ SYNC ------------------ */
     onSuccess: (data) => {
-      qc.setQueryData<PostEntity>(['post', postId], (old) =>
+      qc.setQueryData(['post', postId], (old: PostEntity) =>
         old
           ? {
               ...old,
               isLiked: data.liked,
+              likesCount: data.likesCount,
             }
           : old,
       )
     },
 
-    /* ------------------ REVALIDATE ------------------ */
     onSettled: () => {
       qc.invalidateQueries({ queryKey: ['post', postId] })
     },

@@ -16,6 +16,7 @@ export interface IPost {
   tags: string[]
   likesCount: number
   commentsCount: number
+  isLiked?: boolean
   status: PostStatus
   isDeleted: boolean
   deletedAt?: Date | null
@@ -33,6 +34,7 @@ const PostSchema = new Schema<IPost>(
     category: { type: String, index: true, lowercase: true },
     tags: [{ type: String, index: true }],
     likesCount: { type: Number, default: 0 },
+    isLiked: { type: Boolean, default: false },
     commentsCount: { type: Number, default: 0 },
     status: {
       type: String,

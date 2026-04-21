@@ -23,7 +23,6 @@ export function NewsletterForm() {
   async function onSubmit(data: SubscribePayload) {
     try {
       const res = await newsletterService.subscribe(data)
-      console.log(res, 'res')
       toast.success(res.message)
 
       form.reset()

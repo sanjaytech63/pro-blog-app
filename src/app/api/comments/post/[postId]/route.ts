@@ -3,25 +3,27 @@ import { connectDB } from '@/lib/db'
 import { catchAsync } from '@/utils/catchAsync'
 import { ApiResponse } from '@/utils/ApiResponse'
 import { commentService } from '@/services/comment.service'
-import { verifyAuth } from '@/middlewares/auth.middleware'
+import { requireUser } from '@/middlewares/guards'
 
 export const POST = catchAsync(
   async (
     req: NextRequest,
     { params }: { params: Promise<{ postId: string }> },
   ) => {
-    const auth = await verifyAuth(req)
-    if (auth) return auth
-
     await connectDB()
 
+    const guard = requireUser(req)
+    if (guard) return guard
+
     const { postId } = await params
-    const userId = req.user!.id
+    const { content, parent } = await req.json()
 
-    const body = await req.json()
-    const { content, parent } = body
-
-    const comment = await commentService.create(userId, postId, content, parent)
+    const comment = await commentService.create(
+      req.user!.id,
+      postId,
+      content,
+      parent,
+    )
 
     return ApiResponse.success(comment, 'Comment added successfully')
   },
@@ -36,7 +38,12 @@ export const GET = catchAsync(
 
     const { postId } = await params
 
-    const comments = await commentService.list(postId)
+    const guard = requireUser(req)
+    if (guard) return guard
+
+    const userId = req.user!.id
+
+    const comments = await commentService.list(postId, userId)
 
     return ApiResponse.success(comments)
   },

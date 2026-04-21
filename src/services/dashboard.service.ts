@@ -144,14 +144,13 @@ class DashboardService {
         totalCategories: categoriesCount.length,
         totalViews,
 
-        /* 🔥 NEW (for stats card) */
         prevTotalViews: prevViews,
         viewsGrowth: Number(growth.toFixed(1)),
       },
 
       recentPosts,
 
-      views, // clean formatted
+      views,
     }
 
     /* ------------------ CACHE ------------------ */

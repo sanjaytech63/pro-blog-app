@@ -17,8 +17,6 @@ export default function DashboardPage() {
 
   if (!data) return null
 
-  console.log(data, 'data')
-
   return (
     <div className="space-y-6">
       {/* Header */}

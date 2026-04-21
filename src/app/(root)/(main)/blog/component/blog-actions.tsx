@@ -1,11 +1,10 @@
 'use client'
 
 import { Heart, Share2 } from 'lucide-react'
-import { useLike } from '@/hooks/useLike'
-import { Post } from '@/types/post'
+import { PostEntity, useLike } from '@/hooks/useLike'
 
 interface Props {
-  post: Post
+  post: PostEntity
 }
 
 export function BlogActions({ post }: Props) {
@@ -21,12 +20,12 @@ export function BlogActions({ post }: Props) {
         <Heart
           size={22}
           className={
-            post.likesCount
+            post?.likesCount || post.isLiked
               ? 'fill-red-500 text-red-500'
               : 'text-muted-foreground'
           }
         />
-        {post?.likesCount} Likes
+        {post?.likesCount ?? 0} Likes
       </button>
 
       <button className="flex items-center gap-2 text-sm">

@@ -6,7 +6,7 @@ export const useComments = (postId: string) => {
   return useQuery<CommentEntity[]>({
     queryKey: ['comments', postId],
     queryFn: async () => {
-      const res = await api.get(`/api/comments/${postId}`)
+      const res = await api.get(`/api/comments/post/${postId}`)
       return res.data.data
     },
   })
