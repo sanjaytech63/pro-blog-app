@@ -13,7 +13,7 @@ export default function LandingPage() {
       <HeroSection />
       <Container className="py-10">
         <div className="mb-10 flex items-center justify-between">
-          <h2 className="text-2xl font-bold">Recent Posts</h2>
+          <h2 className="text-2xl font-bold">Recent Posts Test</h2>
           <Button asChild variant="outline">
             <Link href="/blog">
               View All <ArrowRight className="h-4 w-4" />
