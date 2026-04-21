@@ -1,5 +1,3 @@
-export const dynamic = 'force-dynamic'
-
 import AdminUsersClient from './client'
 
 interface PageProps {
@@ -10,12 +8,13 @@ interface PageProps {
   }
 }
 
-export default function AdminUsersPage({ searchParams }: PageProps) {
+export default async function AdminUsersPage({ searchParams }: PageProps) {
+  const params = await searchParams
   return (
     <AdminUsersClient
-      initialPage={Number(searchParams.page) || 1}
-      initialSearch={searchParams.search || ''}
-      includeDeleted={searchParams.includeDeleted === 'true'}
+      initialPage={Number(params.page) || 1}
+      initialSearch={params.search || ''}
+      includeDeleted={params.includeDeleted === 'true'}
     />
   )
 }

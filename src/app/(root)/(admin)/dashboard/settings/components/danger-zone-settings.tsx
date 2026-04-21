@@ -6,7 +6,6 @@ import { SettingsSection } from './settings-section'
 export function DangerZoneSettings() {
   const handleDeleteAccount = () => {
     // 🔴 connect API later
-    console.log('Delete account')
   }
 
   return (

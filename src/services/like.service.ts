@@ -1,39 +1,34 @@
 import { Like } from '@/models/like.model'
-import { Post } from '@/models/post.model'
-import ApiError from '@/utils/ApiError'
-import mongoose from 'mongoose'
+import { Types } from 'mongoose'
 
 class LikeService {
   async toggleLike(userId: string, postId: string) {
-    if (!mongoose.Types.ObjectId.isValid(postId)) {
-      throw new ApiError(400, 'Invalid post id')
-    }
-
-    const post = await Post.findById(postId)
-    if (!post) throw new ApiError(404, 'Post not found')
-
-    const existing = await Like.findOne({ user: userId, post: postId })
-
-    if (existing) {
-      await existing.deleteOne()
-
-      await Post.findByIdAndUpdate(postId, {
-        $inc: { likesCount: -1 },
-      })
-
-      return { liked: false }
-    }
-
-    await Like.create({
+    const existing = await Like.findOne({
       user: userId,
       post: postId,
     })
 
-    await Post.findByIdAndUpdate(postId, {
-      $inc: { likesCount: 1 },
+    let liked: boolean
+
+    if (existing) {
+      await existing.deleteOne()
+      liked = false
+    } else {
+      await Like.create({
+        user: userId,
+        post: postId,
+      })
+      liked = true
+    }
+
+    const likesCount = await Like.countDocuments({
+      post: new Types.ObjectId(postId),
     })
 
-    return { liked: true }
+    return {
+      liked,
+      likesCount,
+    }
   }
 }
 
