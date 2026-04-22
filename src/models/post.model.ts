@@ -30,7 +30,7 @@ const PostSchema = new Schema<IPost>(
     content: { type: String, required: true },
     excerpt: String,
     coverImage: String,
-    author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    author: { type: Types.ObjectId, ref: 'User', required: true },
     category: { type: String, index: true, lowercase: true },
     tags: [{ type: String, index: true }],
     likesCount: { type: Number, default: 0 },
@@ -44,7 +44,7 @@ const PostSchema = new Schema<IPost>(
     },
     isDeleted: { type: Boolean, default: false, index: true },
     deletedAt: Date,
-    deletedBy: { type: Schema.Types.ObjectId, ref: 'User' },
+    deletedBy: { type: Types.ObjectId, ref: 'User' },
   },
   { timestamps: true },
 )
