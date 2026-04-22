@@ -29,12 +29,12 @@ class ContactService {
   async getContacts({
     page = 1,
     limit = 10,
-    search,
-  }: {
+    search = '',
+  }: Partial<{
     page: number
     limit: number
     search: string
-  }) {
+  }>) {
     if (page < 1 || limit < 1) {
       throw new ApiError(400, 'Invalid pagination params')
     }
@@ -43,11 +43,13 @@ class ContactService {
 
     const filter: ContactQuery = {}
 
-    if (search) {
+    if (search?.trim()) {
+      const safeSearch = search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+
       filter.$or = [
-        { fullname: { $regex: search, $options: 'i' } },
-        { email: { $regex: search, $options: 'i' } },
-        { subject: { $regex: search, $options: 'i' } },
+        { fullname: { $regex: safeSearch, $options: 'i' } },
+        { email: { $regex: safeSearch, $options: 'i' } },
+        { subject: { $regex: safeSearch, $options: 'i' } },
       ]
     }
 

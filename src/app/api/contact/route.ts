@@ -4,7 +4,6 @@ import { catchAsync } from '@/utils/catchAsync'
 import { ApiResponse } from '@/utils/ApiResponse'
 import { contactSchema } from '@/validators/contact.schema'
 import { contactService } from '@/services/contact.service'
-import ApiError from '@/utils/ApiError'
 
 export const POST = catchAsync(async (req: NextRequest) => {
   await connectDB()
@@ -23,12 +22,20 @@ export const POST = catchAsync(async (req: NextRequest) => {
   return ApiResponse.success(result, 'Contact submitted successfully')
 })
 
-export const GET = catchAsync(async () => {
+export const GET = catchAsync(async (req: NextRequest) => {
   await connectDB()
 
-  const contacts = await contactService.getContacts()
+  const { searchParams } = new URL(req.url)
 
-  if (!contacts) throw new ApiError(404, 'Contacts not found')
+  const page = Number(searchParams.get('page')) || 1
+  const limit = Number(searchParams.get('limit')) || 10
+  const search = searchParams.get('search') || ''
+
+  const contacts = await contactService.getContacts({
+    page,
+    limit,
+    search,
+  })
 
   return ApiResponse.success(contacts)
 })

@@ -19,5 +19,10 @@ const contactSchema = new Schema({
   },
 })
 
+contactSchema.index({ fullname: 1 })
+contactSchema.index({ email: 1 })
+contactSchema.index({ subject: 1 })
+contactSchema.index({ createdAt: -1 })
+
 const Contact = models.Contact || mongoose.model('Contact', contactSchema)
 export default Contact
