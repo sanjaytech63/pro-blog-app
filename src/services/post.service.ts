@@ -110,11 +110,6 @@ class PostService {
   }
 
   async getBySlug(slug: string) {
-    const cacheKey = `post:slug:${slug}:v2`
-
-    const cached = await cache.get(cacheKey)
-    if (cached) return cached
-
     const post = await Post.findOne({
       slug,
       isDeleted: false,
@@ -128,13 +123,11 @@ class PostService {
     const result = {
       ...post,
       author: {
-        fullName: post.author?.fullName ?? 'Unknown Author',
+        fullName: post.author?.fullName ?? 'Unknown Full Name',
         avatar: post.author?.avatar ?? '/images/default-avatar.png',
       },
     }
 
-    await cache.set(cacheKey, result, 300)
-    console.log('Fetched result:', result)
     return result
   }
 
