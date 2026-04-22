@@ -46,12 +46,14 @@ export default async function BlogDetailsPage({ params }: Props) {
           <main className="space-y-10">
             <BlogHero post={post} />
             <SinglePostContent post={post} />
-            <BlogAuthor
-              author={{
-                fullName: post.author.fullName || '',
-                avatar: post.author.avatar || '/images/default-avatar.png',
-              }}
-            />
+            {post && (
+              <BlogAuthor
+                author={{
+                  fullName: post.author.fullName || '',
+                  avatar: post.author.avatar || '/images/default-avatar.png',
+                }}
+              />
+            )}
             <BlogComments postId={post._id} />
           </main>
         </Container>

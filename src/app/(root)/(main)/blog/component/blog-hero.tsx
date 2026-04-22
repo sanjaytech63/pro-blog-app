@@ -11,7 +11,6 @@ interface Props {
 
 export function BlogHero({ post }: Props) {
   const stats = readingTime(post.content || '')
-
   return (
     <div className="mb-12">
       <div className="mb-6 flex items-center justify-between">
