@@ -110,7 +110,7 @@ class PostService {
   }
 
   async getBySlug(slug: string) {
-    const cacheKey = `post:slug:${slug}`
+    const cacheKey = `post:slug:${slug}:v2`
 
     const cached = await cache.get(cacheKey)
     if (cached) return cached
@@ -134,7 +134,7 @@ class PostService {
     }
 
     await cache.set(cacheKey, result, 300)
-
+    console.log('Fetched result:', result)
     return result
   }
 
