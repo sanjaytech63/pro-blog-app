@@ -18,7 +18,6 @@ export async function getPosts(params?: GetPostsParams) {
 
   const res = await fetch(
     `${env.NEXT_PUBLIC_API_URL}/api/posts${query ? `?${query}` : ''}`,
-    { cache: 'no-store' },
   )
 
   if (!res.ok) return null
@@ -28,9 +27,7 @@ export async function getPosts(params?: GetPostsParams) {
 }
 
 export async function getPostBySlug(slug: string) {
-  const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/posts/${slug}`, {
-    cache: 'no-store',
-  })
+  const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/posts/${slug}`)
 
   if (!res.ok) return null
 
@@ -40,9 +37,7 @@ export async function getPostBySlug(slug: string) {
 }
 
 export async function getCategories(): Promise<GetCategoriesResponse | null> {
-  const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/categories`, {
-    cache: 'no-store',
-  })
+  const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/categories`)
 
   if (!res.ok) return null
 
