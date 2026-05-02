@@ -74,7 +74,7 @@ export function proxy(request: NextRequest) {
   // =============================
   // 1️⃣ NOT AUTHENTICATED
   // =============================
-  if (!payload && !isPublicRoute) {
+  if (!token && !isPublicRoute) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 

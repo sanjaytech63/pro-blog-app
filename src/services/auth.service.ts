@@ -6,11 +6,9 @@ import { env } from '@/config/env'
 import { emailService } from '@/services/email.service'
 import crypto from 'crypto'
 import { log } from 'console'
-import {
-  signAccessToken,
-  signRefreshToken,
-  verifyRefreshToken,
-} from '@/lib/jwt'
+import { signAccessToken, signRefreshToken } from '@/lib/jwt'
+
+import jwt from 'jsonwebtoken'
 
 class AuthService {
   async register(fullName: string, email: string, password: string) {
@@ -108,7 +106,7 @@ class AuthService {
       .update(refreshToken)
       .digest('hex')
 
-    user.refreshTokenExpires = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+    user.refreshTokenExpires = new Date(Date.now() + 2 * 60 * 1000)
 
     await user.save()
 
@@ -191,7 +189,15 @@ class AuthService {
 
   /* ---------- REFRESH TOKEN ---------- */
   async refresh(refreshToken: string) {
-    const decoded = verifyRefreshToken<{ id: string }>(refreshToken)
+    let decoded: { id: string }
+
+    try {
+      decoded = jwt.verify(refreshToken, env.JWT_REFRESH_SECRET) as {
+        id: string
+      }
+    } catch {
+      throw new ApiError(401, 'Invalid refresh token')
+    }
 
     const hashed = crypto
       .createHash('sha256')
@@ -229,6 +235,7 @@ class AuthService {
       refreshToken: newRefreshToken,
     }
   }
+
   /* ---------- LOGOUT ---------- */
   async logout(userId: string) {
     await User.findByIdAndUpdate(userId, {

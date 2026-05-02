@@ -9,7 +9,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next'
 import { AuthInitializer } from '@/components/auth-initializer'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://blogmint.com'),
+  metadataBase: new URL('https://pro-blog-app.vercel.app'),
   title: {
     default: 'BlogMint',
     template: '%s | BlogMint',
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     title: 'BlogMint',
     description:
       'Modern platform for publishing blogs, engaging with readers, and growing an audience.',
-    url: 'https://blogmint.com',
+    url: 'https://pro-blog-app.vercel.app',
     siteName: 'BlogMint',
     locale: 'en_US',
     type: 'website',
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: 'https://blogmint.com',
+    canonical: 'https://pro-blog-app.vercel.app',
   },
 }
 
@@ -59,7 +59,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="antialiased">
+      <body>
         <ClientProviders>
           <AuthGate>
             <AuthInitializer />
