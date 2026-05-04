@@ -9,9 +9,7 @@ export const env = Object.freeze({
     'https://main.d32qgf9c245560.amplifyapp.com',
 
   /* ---------- Database ---------- */
-  MONGO_URI:
-    process.env.MONGO_URI ||
-    'mongodb+srv://sanjay:sanjay6375@cluster0.4j3bykz.mongodb.net/blog?retryWrites=true&w=majority',
+  MONGO_URI: process.env.MONGO_URI ?? '',
 
   /* ---------- SMTP ---------- */
   SMTP_HOST: process.env.SMTP_HOST ?? '',
