@@ -2,11 +2,10 @@ export const env = Object.freeze({
   /* ---------- App ---------- */
   NODE_ENV: process.env.NODE_ENV ?? 'development',
 
-  APP_URL: process.env.APP_URL || 'https://main.d32qgf9c245560.amplifyapp.com',
+  APP_URL: process.env.APP_URL || 'http://localhost:3000',
 
   NEXT_PUBLIC_API_URL:
-    process.env.NEXT_PUBLIC_API_URL ||
-    'https://main.d32qgf9c245560.amplifyapp.com',
+    process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000',
 
   /* ---------- Database ---------- */
   MONGO_URI: process.env.MONGO_URI ?? '',
