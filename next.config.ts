@@ -1,3 +1,4 @@
+import { env } from '@/config/env'
 import type { NextConfig } from 'next'
 
 const securityHeaders = [
@@ -8,6 +9,10 @@ const securityHeaders = [
 ]
 
 const nextConfig: NextConfig = {
+  output: 'standalone',
+  env: {
+    MONGO_URI: env.MONGO_URI,
+  },
   images: {
     remotePatterns: [
       {

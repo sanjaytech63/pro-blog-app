@@ -13,7 +13,6 @@ export function OptimizedImage({
   src,
   alt,
   priority = false,
-  className,
   containerClassName,
 }: Props) {
   return (
