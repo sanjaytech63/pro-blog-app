@@ -16,6 +16,8 @@ export const env = Object.freeze({
   SMTP_EMAIL: process.env.SMTP_EMAIL ?? '',
   SMTP_PASSWORD: process.env.SMTP_PASSWORD ?? '',
 
+  JWT_SECRET: process.env.JWT_SECRET || '',
+
   /* ---------- JWT (ACCESS) ---------- */
   JWT_ACCESS_SECRET: process.env.JWT_ACCESS_SECRET || '',
   ACCESS_TOKEN_EXPIRES: process.env.ACCESS_TOKEN_EXPIRES || '15m',
